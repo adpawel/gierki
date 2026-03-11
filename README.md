@@ -23,8 +23,8 @@ nimby/
 ├── negamax.py                    # Eksperyment 1: Wpływ głębokości (Depth) na wyniki
 ├── negamaxAB.py                  # Eksperyment 2: Testowanie odcięcia Alfa-Beta i pomiar czasu
 ├── expecti-minimax.py            # Eksperyment 3: Expectiminimax vs standardowy Negamax
-├── negamaxAB_results.json        # Wygenerowane raporty w formacie JSON do eksperymentu 3.
-├── expectiminimax-results.json   # Wygenerowane raporty w formacie JSON do eksperymentu 2.
+├── negamaxAB_results.json        # Wygenerowane raporty w formacie JSON do eksperymentu 2.
+├── expectiminimax-results.json   # Wygenerowane raporty w formacie JSON do eksperymentu 3.
 ├── wykres1.png                   # Wygenerowany wykres z eksperymentu 1
 ├── report.pdf                    # Końcowy raport z analizą wyników
 └── requirements.txt              # Zależności projektowe
