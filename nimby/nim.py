@@ -3,8 +3,8 @@ from easyAI import TwoPlayerGame
 
 class Nim(TwoPlayerGame):
     """
-    Deterministyczna baza gry Nim.
-    Gracz, który zabierze ostatni element, wygrywa.
+    Deterministic basis of the game Nim.
+    The player who takes the last piece wins.
     """
     def __init__(self, players, piles=(3, 4, 5)):
         self.players = players
@@ -30,10 +30,8 @@ class Nim(TwoPlayerGame):
         return sum(self.piles) == 0
 
     def scoring(self):
-        # Jeśli is_over() to prawda, znaczy to, że poprzedni gracz 
-        # zabrał ostatni element. Obecny gracz przegrywa (-100).
+        # If is_over() is true, it means the previous player took the last item. The current player loses (-100)
         return -100 if self.is_over() else 0
         
     def show(self):
-        # Zostawiamy puste, żeby konsola nie została zalana tekstem podczas 100 gier
         pass

@@ -1,5 +1,6 @@
+import json
 from easyAI import AI_Player, Negamax
-from utils import run_tournament
+from utils import add_to_report
 from models import ExpectiNegamax
 
 if __name__ == "__main__":
@@ -10,9 +11,17 @@ if __name__ == "__main__":
     ai_expecti_5 = AI_Player(ExpectiNegamax(5))
 
     games = 100
+    json_report = []
 
-    print("================ STARCIĘ TYTANÓW: NEGAMAX vs EXPECTIMINIMAX ================\n")
-    print("Testowane na PRAWDZIWEJ, probabilistycznej grze (Nimby 10%)...")
+    print("================ NEGAMAX vs EXPECTIMINIMAX ================\n")
+    print("Testowane na probabilistycznej grze (Nimby 10%)...")
     
-    run_tournament(ai_negamax_4, ai_expecti_4, "Zwykły Negamax(4)", "ExpectiMinimax(4)", is_probabilistic=True, num_games=games)
-    run_tournament(ai_negamax_5, ai_expecti_5, "Zwykły Negamax(5)", "ExpectiMinimax(5)", is_probabilistic=True, num_games=games)
+    add_to_report(json_report, "Probabilistyczny Nimby (10%)", ai_negamax_4, ai_expecti_4, 
+                  "Zwykły Negamax(4)", "ExpectiMinimax(4)", True, games)
+                  
+    add_to_report(json_report, "Probabilistyczny Nimby (10%)", ai_negamax_5, ai_expecti_5, 
+                  "Zwykły Negamax(5)", "ExpectiMinimax(5)", True, games)
+
+    with open("expectiminimax-results.json", "w", encoding="utf-8") as f:
+        json.dump(json_report, f, indent=4, ensure_ascii=False)
+        

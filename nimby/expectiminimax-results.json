@@ -1,0 +1,36 @@
+[
+    {
+        "environment": "Probabilistyczny Nimby (10%)",
+        "matchup": "Zwykły Negamax(4) vs ExpectiMinimax(4)",
+        "games_played": 100,
+        "results": {
+            "player1": {
+                "algorithm": "Zwykły Negamax(4)",
+                "wins": 43,
+                "time_seconds": 0.2701
+            },
+            "player2": {
+                "algorithm": "ExpectiMinimax(4)",
+                "wins": 57,
+                "time_seconds": 0.5541
+            }
+        }
+    },
+    {
+        "environment": "Probabilistyczny Nimby (10%)",
+        "matchup": "Zwykły Negamax(5) vs ExpectiMinimax(5)",
+        "games_played": 100,
+        "results": {
+            "player1": {
+                "algorithm": "Zwykły Negamax(5)",
+                "wins": 44,
+                "time_seconds": 0.5686
+            },
+            "player2": {
+                "algorithm": "ExpectiMinimax(5)",
+                "wins": 56,
+                "time_seconds": 2.5051
+            }
+        }
+    }
+]

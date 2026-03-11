@@ -1,0 +1,87 @@
+[
+    {
+        "environment": "Deterministyczny Nim",
+        "matchup": "Negamax(AB, depth=4) vs Negamax(NoAB, depth=4)",
+        "games_played": 20,
+        "results": {
+            "player1": {
+                "algorithm": "Negamax(AB, depth=4)",
+                "wins": 10,
+                "time_seconds": 0.048
+            },
+            "player2": {
+                "algorithm": "Negamax(NoAB, depth=4)",
+                "wins": 10,
+                "time_seconds": 0.2223
+            }
+        }
+    },
+    {
+        "environment": "Deterministyczny Nim",
+        "matchup": "Negamax(AB, depth=5) vs Negamax(NoAB, depth=5)",
+        "games_played": 20,
+        "results": {
+            "player1": {
+                "algorithm": "Negamax(AB, depth=5)",
+                "wins": 10,
+                "time_seconds": 0.126
+            },
+            "player2": {
+                "algorithm": "Negamax(NoAB, depth=5)",
+                "wins": 10,
+                "time_seconds": 0.8553
+            }
+        }
+    },
+    {
+        "environment": "Probabilistyczny Nimby",
+        "matchup": "Negamax(AB, depth=4) vs Negamax(NoAB, depth=4)",
+        "games_played": 20,
+        "results": {
+            "player1": {
+                "algorithm": "Negamax(AB, depth=4)",
+                "wins": 10,
+                "time_seconds": 0.05
+            },
+            "player2": {
+                "algorithm": "Negamax(NoAB, depth=4)",
+                "wins": 10,
+                "time_seconds": 0.2241
+            }
+        }
+    },
+    {
+        "environment": "Probabilistyczny Nimby",
+        "matchup": "Negamax(AB, depth=5) vs Negamax(NoAB, depth=5)",
+        "games_played": 20,
+        "results": {
+            "player1": {
+                "algorithm": "Negamax(AB, depth=5)",
+                "wins": 10,
+                "time_seconds": 0.1241
+            },
+            "player2": {
+                "algorithm": "Negamax(NoAB, depth=5)",
+                "wins": 10,
+                "time_seconds": 0.8189
+            }
+        }
+    },
+    {
+        "environment": "Probabilistyczny Nimby",
+        "matchup": "Negamax(AB, depth=4) vs Negamax(AB, depth=5)",
+        "games_played": 20,
+        "results": {
+            "player1": {
+                "algorithm": "Negamax(AB, depth=4)",
+                "wins": 2,
+                "time_seconds": 0.0417
+            },
+            "player2": {
+                "algorithm": "Negamax(AB, depth=5)",
+                "wins": 18,
+                "time_seconds": 0.1285
+            }
+        }
+    }
+]

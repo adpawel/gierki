@@ -1,5 +1,5 @@
 class NegamaxNoAB:
-    """Własna implementacja algorytmu Negamax bez odcięcia alfa-beta."""
+    """Own implementation of the Negamax algorithm without alpha-beta cutoff."""
     def __init__(self, depth):
         self.depth = depth
 
@@ -33,7 +33,7 @@ class NegamaxNoAB:
 
 
 class ExpectiNegamax:
-    """Niestandardowy algorytm Expectiminimax dostosowany do struktury Negamax."""
+    """Custom Expectiminimax algorithm adapted to the Negamax structure."""
     def __init__(self, depth):
         self.depth = depth
 
@@ -54,12 +54,12 @@ class ExpectiNegamax:
     def _expected_value(self, game, move, depth, alpha, beta):
         pile, take = map(int, move.split(","))
 
-        # 1. Symulacja normalnego ruchu
+        # Normal move
         game.make_move(move)
         score_normal = -self._negamax(game, depth, -beta, -alpha)
         game.unmake_move(move)
 
-        # 2. Symulacja ruchu pechowego
+        # Corrupted move
         if take > 1:
             move_slip = f"{pile},{take-1}"
             game.make_move(move_slip)
