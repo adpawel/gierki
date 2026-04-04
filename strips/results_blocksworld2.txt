@@ -1,0 +1,66 @@
+BLOCKSWORLD - RESULTS
+============================================================
+
+Osiągalne stany: 304
+
+--- Rozwiązanie bez heurystyki ---
+
+Znaleziono plan. Koszt: 5
+Plan:
+  1. unstack_A_B_T2
+  2. unstack_B_C_T2
+  3. stack_C_D_T1
+  4. stack_B_C_T2
+  5. stack_A_B_T2
+Czas: 0.0931s
+
+--- Rozwiązanie z heurystyką ---
+
+Znaleziono plan. Koszt: 5
+Plan:
+  1. unstack_A_B_T1
+  2. unstack_B_C_T2
+  3. stack_C_D_T1
+  4. stack_B_C_T2
+  5. stack_A_B_T1
+Czas: 0.0034s
+
+--- Rozwiązanie z podcelami ---
+
+
+Podcel 1: {'on_C_D': True}
+Akcje: [unstack_A_B_T2, unstack_B_C_T1, stack_C_D_T1]
+
+Podcel 2: {'on_C_D': True, 'on_B_C': True}
+Akcje: [stack_B_C_T1]
+
+Podcel 3: {'on_C_D': True, 'on_B_C': True, 'on_A_B': True}
+Akcje: [stack_A_B_T2]
+
+Pełny plan z podcelami:
+  1. unstack_A_B_T2
+  2. unstack_B_C_T1
+  3. stack_C_D_T1
+  4. stack_B_C_T1
+  5. stack_A_B_T2
+Czas: 0.0102s
+
+--- Rozwiązanie z podcelami i heurystyką ---
+
+
+Podcel 1: {'on_C_D': True}
+Akcje: [unstack_A_B_T1, unstack_B_C_T2, stack_C_D_T1]
+
+Podcel 2: {'on_C_D': True, 'on_B_C': True}
+Akcje: [stack_B_C_T2]
+
+Podcel 3: {'on_C_D': True, 'on_B_C': True, 'on_A_B': True}
+Akcje: [stack_A_B_T1]
+
+Pełny plan z podcelami:
+  1. unstack_A_B_T1
+  2. unstack_B_C_T2
+  3. stack_C_D_T1
+  4. stack_B_C_T2
+  5. stack_A_B_T1
+Czas: 0.0086s

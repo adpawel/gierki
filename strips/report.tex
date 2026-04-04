@@ -1,0 +1,328 @@
+\documentclass[a4paper,11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{geometry}
+\usepackage{listings}
+
+\geometry{margin=2.5cm}
+
+\title{Projekt 2: STRIPS}
+\author{Paweł Adamczyk, Dominika Bujnarowska}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section{Wprowadzenie}
+
+Celem projektu było zdefiniowanie problemów planowania w formalizmie STRIPS oraz rozwiązanie ich metodą planowania do przodu (forward planning). Dodatkowo należało zaproponować heurystyki oraz zastosować dekompozycję problemu na podcele.
+
+Zgodnie z wymaganiami projektu zdefiniowano trzy problemy o przestrzeni stanów większej niż 50 oraz rozwiązania wymagające co najmniej 4 akcji.
+
+\section{Problem 1: Blocks World}
+
+\subsection{Opis problemu}
+
+Rozważany jest klasyczny problem Blocks World z czterema blokami $A,B,C,D$ oraz dwoma stołami. Stan początkowy:
+
+\begin{itemize}
+\item $A$ na $B$
+\item $B$ na $C$
+\item $C$ na stole
+\item $D$ na stole
+\end{itemize}
+
+Celem jest uzyskanie konfiguracji:
+\[
+C \text{ na } D,\quad B \text{ na } C,\quad A \text{ na } B
+\]
+
+Liczba stanów osiągalnych wynosi $304$.
+
+\subsection{Heurystyka}
+
+Zastosowano heurystykę dziedzinową:
+\begin{itemize}
+\item kara za niespełnione relacje docelowe,
+\item dodatkowa kara za blokujące klocki.
+\end{itemize}
+
+Heurystyka ta preferuje stany bliższe konfiguracji docelowej i znacząco przyspiesza wyszukiwanie.
+
+\subsection{Wyniki}
+
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+Metoda & Koszt & Czas [s] \\
+\hline
+Bez heurystyki & 5 & 0.0931 \\
+Z heurystyką & 5 & 0.0034 \\
+Z podcelami & 5 & 0.0102 \\
+Z podcelami + heurystyka & 5 & 0.0086 \\
+\hline
+\end{tabular}
+\end{center}
+
+\subsection{Znalezione plany}
+
+\paragraph{Bez heurystyki}
+Znaleziony plan:
+\begin{enumerate}
+    \item \texttt{unstack\_A\_B\_T2}
+    \item \texttt{unstack\_B\_C\_T2}
+    \item \texttt{stack\_C\_D\_T1}
+    \item \texttt{stack\_B\_C\_T2}
+    \item \texttt{stack\_A\_B\_T2}
+\end{enumerate}
+
+\paragraph{Z heurystyką}
+Znaleziony plan:
+\begin{enumerate}
+    \item \texttt{unstack\_A\_B\_T1}
+    \item \texttt{unstack\_B\_C\_T2}
+    \item \texttt{stack\_C\_D\_T1}
+    \item \texttt{stack\_B\_C\_T2}
+    \item \texttt{stack\_A\_B\_T1}
+\end{enumerate}
+
+\paragraph{Z podcelami}
+Znaleziony plan:
+\begin{enumerate}
+    \item \texttt{unstack\_A\_B\_T2}
+    \item \texttt{unstack\_B\_C\_T1}
+    \item \texttt{stack\_C\_D\_T1}
+    \item \texttt{stack\_B\_C\_T1}
+    \item \texttt{stack\_A\_B\_T2}
+\end{enumerate}
+
+\paragraph{Z podcelami i heurystyką}
+Znaleziony plan:
+\begin{enumerate}
+    \item \texttt{unstack\_A\_B\_T1}
+    \item \texttt{unstack\_B\_C\_T2}
+    \item \texttt{stack\_C\_D\_T1}
+    \item \texttt{stack\_B\_C\_T2}
+    \item \texttt{stack\_A\_B\_T1}
+\end{enumerate}
+
+\subsection{Analiza}
+
+Heurystyka skróciła czas ponad 25-krotnie. Wszystkie metody znalazły plan o tym samym koszcie, co wskazuje na poprawność rozwiązania.
+
+Podział na podcele:
+\begin{enumerate}
+\item $C$ na $D$
+\item $B$ na $C$
+\item $A$ na $B$
+\end{enumerate}
+
+umożliwia stopniowe budowanie rozwiązania bez zwiększenia kosztu planu.
+
+\section{Problem 2: Dinner Planning}
+
+\subsection{Opis problemu}
+
+Problem modeluje przygotowanie kolacji i prezentów dla pięciu miejsc. Każde miejsce posiada właściwości:
+\texttt{clean}, \texttt{quiet}, \texttt{garbage}, \texttt{dinner}, \texttt{present}.
+
+Celem jest uzyskanie dla każdego miejsca:
+\[
+dinner(x) = True,\quad present(x) = True
+\]
+
+Liczba stanów osiągalnych wynosi $1024$.
+
+\subsection{Heurystyka}
+
+Zastosowano heurystykę:
+\[
+h(s) = \text{liczba niespełnionych warunków celu}
+\]
+
+Jest to prosta, ale skuteczna heurystyka mierząca odległość od celu.
+
+\subsection{Wyniki}
+
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+Metoda & Koszt & Czas [s] \\
+\hline
+Bez heurystyki & 10 & 1.2880 \\
+Z heurystyką & 10 & 0.0048 \\
+Z podcelami & 10 & 0.0395 \\
+Z podcelami + heurystyka & 10 & 0.0087 \\
+\hline
+\end{tabular}
+\end{center}
+
+\subsection{Znalezione plany}
+
+\paragraph{Bez heurystyki}
+Znaleziony plan:
+\begin{enumerate}
+    \item \texttt{cook\_e}
+    \item \texttt{wrap\_c}
+    \item \texttt{wrap\_d}
+    \item \texttt{cook\_c}
+    \item \texttt{cook\_d}
+    \item \texttt{wrap\_a}
+    \item \texttt{wrap\_b}
+    \item \texttt{cook\_a}
+    \item \texttt{cook\_b}
+    \item \texttt{wrap\_e}
+\end{enumerate}
+
+\paragraph{Z heurystyką}
+Znaleziony plan:
+\begin{enumerate}
+    \item \texttt{wrap\_c}
+    \item \texttt{cook\_c}
+    \item \texttt{wrap\_a}
+    \item \texttt{cook\_a}
+    \item \texttt{wrap\_e}
+    \item \texttt{cook\_e}
+    \item \texttt{wrap\_d}
+    \item \texttt{cook\_d}
+    \item \texttt{wrap\_b}
+    \item \texttt{cook\_b}
+\end{enumerate}
+
+\paragraph{Z podcelami}
+Znaleziony plan:
+\begin{enumerate}
+    \item \texttt{cook\_a}
+    \item \texttt{wrap\_a}
+    \item \texttt{cook\_b}
+    \item \texttt{wrap\_b}
+    \item \texttt{cook\_e}
+    \item \texttt{wrap\_c}
+    \item \texttt{wrap\_d}
+    \item \texttt{cook\_c}
+    \item \texttt{cook\_d}
+    \item \texttt{wrap\_e}
+\end{enumerate}
+
+\paragraph{Z podcelami i heurystyką}
+Znaleziony plan:
+\begin{enumerate}
+    \item \texttt{wrap\_a}
+    \item \texttt{cook\_a}
+    \item \texttt{wrap\_b}
+    \item \texttt{cook\_b}
+    \item \texttt{wrap\_c}
+    \item \texttt{cook\_c}
+    \item \texttt{wrap\_e}
+    \item \texttt{cook\_e}
+    \item \texttt{wrap\_d}
+    \item \texttt{cook\_d}
+\end{enumerate}
+
+\subsection{Analiza}
+
+Heurystyka skróciła czas obliczeń ponad 250-krotnie.
+
+Podcele zostały zdefiniowane jako:
+\begin{enumerate}
+\item przygotowanie jednego miejsca,
+\item przygotowanie dwóch miejsc,
+\item przygotowanie wszystkich miejsc.
+\end{enumerate}
+
+Dekompozycja nie zmieniła kosztu planu, ale uporządkowała proces planowania.
+
+\section{Problem 3: Problem relacyjny}
+
+\subsection{Opis problemu}
+
+Problem operuje na relacjach $S(x,y)$ i $R(x,y)$ dla pięciu obiektów.
+
+Stan początkowy zawiera łańcuch relacji:
+\[
+S(a,b), S(b,c), S(c,d), S(d,e)
+\]
+
+Celem jest:
+\[
+S(b,a), S(c,b), S(d,c), S(e,d)
+\]
+
+Liczba stanów osiągalnych wynosi $1\,066\,992$.
+
+\subsection{Heurystyka}
+
+Zastosowano heurystykę:
+\[
+h(s) = \text{liczba niespełnionych warunków celu}
+\]
+
+\subsection{Wyniki}
+
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+Metoda & Koszt & Czas [s] \\
+\hline
+Bez heurystyki & 4 & 10.8653 \\
+Z heurystyką & 4 & 0.0051 \\
+Z podcelami & 4 & 0.0190 \\
+Z podcelami + heurystyka & 4 & 0.0114 \\
+\hline
+\end{tabular}
+\end{center}
+
+\subsection{Znalezione plany}
+
+\paragraph{Bez heurystyki}
+Znaleziony plan:
+\begin{enumerate}
+    \item \texttt{op1\_a\_b\_c}
+    \item \texttt{op2\_d\_c\_c}
+    \item \texttt{op1\_b\_c\_b}
+    \item \texttt{op1\_d\_e\_d}
+\end{enumerate}
+
+\paragraph{Z heurystyką}
+Znaleziony plan:
+\begin{enumerate}
+    \item \texttt{op2\_c\_d\_b}
+    \item \texttt{op2\_d\_c\_c}
+    \item \texttt{op2\_b\_e\_a}
+    \item \texttt{op2\_e\_b\_d}
+\end{enumerate}
+
+\paragraph{Z podcelami}
+Znaleziony plan:
+\begin{enumerate}
+    \item \texttt{op2\_b\_e\_a}
+    \item \texttt{op2\_c\_d\_b}
+    \item \texttt{op2\_d\_c\_c}
+    \item \texttt{op2\_e\_b\_d}
+\end{enumerate}
+
+\paragraph{Z podcelami i heurystyką}
+Znaleziony plan:
+\begin{enumerate}
+    \item \texttt{op2\_b\_e\_a}
+    \item \texttt{op2\_c\_d\_b}
+    \item \texttt{op2\_d\_c\_c}
+    \item \texttt{op2\_e\_b\_d}
+\end{enumerate}
+
+\subsection{Analiza}
+
+Heurystyka radykalnie zmniejszyła czas obliczeń (ponad 2000 razy). Podcele nie zmieniły kosztu planu, ale pozwoliły na bardziej uporządkowane budowanie rozwiązania.
+
+\section{Podsumowanie}
+
+\begin{itemize}
+\item Heurystyki znacząco przyspieszają planowanie bez pogorszenia jakości rozwiązania.
+\item Dekompozycja na podcele jest skuteczna w problemach o strukturze sekwencyjnej.
+\item Wszystkie trzy problemy spełniają wymagania projektu: liczba stanów przekracza 50, a rozwiązania wymagają co najmniej 4 akcji.
+\end{itemize}
+
+\end{document}

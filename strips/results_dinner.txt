@@ -1,0 +1,86 @@
+DINNER PLANNING - RESULTS
+============================================================
+
+Osiągalne stany: 1024
+
+--- Rozwiązanie bez heurystyki ---
+
+Znaleziono plan. Koszt: 10
+Plan:
+  1. cook_e
+  2. wrap_c
+  3. wrap_d
+  4. cook_c
+  5. cook_d
+  6. wrap_a
+  7. wrap_b
+  8. cook_a
+  9. cook_b
+  10. wrap_e
+Czas: 1.2880s
+
+--- Rozwiązanie z heurystyką ---
+
+Znaleziono plan. Koszt: 10
+Plan:
+  1. wrap_c
+  2. cook_c
+  3. wrap_a
+  4. cook_a
+  5. wrap_e
+  6. cook_e
+  7. wrap_d
+  8. cook_d
+  9. wrap_b
+  10. cook_b
+Czas: 0.0048s
+
+--- Rozwiązanie z podcelami ---
+
+
+Podcel 1: {'dinner_a': True, 'present_a': True}
+Akcje: [cook_a, wrap_a]
+
+Podcel 2: {'dinner_a': True, 'present_a': True, 'dinner_b': True, 'present_b': True}
+Akcje: [cook_b, wrap_b]
+
+Podcel 3: {'dinner_a': True, 'present_a': True, 'dinner_b': True, 'present_b': True, 'dinner_c': True, 'present_c': True, 'dinner_d': True, 'present_d': True, 'dinner_e': True, 'present_e': True}
+Akcje: [cook_e, wrap_c, wrap_d, cook_c, cook_d, wrap_e]
+
+Pełny plan z podcelami:
+  1. cook_a
+  2. wrap_a
+  3. cook_b
+  4. wrap_b
+  5. cook_e
+  6. wrap_c
+  7. wrap_d
+  8. cook_c
+  9. cook_d
+  10. wrap_e
+Czas: 0.0395s
+
+--- Rozwiązanie z podcelami i heurystyką ---
+
+
+Podcel 1: {'dinner_a': True, 'present_a': True}
+Akcje: [wrap_a, cook_a]
+
+Podcel 2: {'dinner_a': True, 'present_a': True, 'dinner_b': True, 'present_b': True}
+Akcje: [wrap_b, cook_b]
+
+Podcel 3: {'dinner_a': True, 'present_a': True, 'dinner_b': True, 'present_b': True, 'dinner_c': True, 'present_c': True, 'dinner_d': True, 'present_d': True, 'dinner_e': True, 'present_e': True}
+Akcje: [wrap_c, cook_c, wrap_e, cook_e, wrap_d, cook_d]
+
+Pełny plan z podcelami:
+  1. wrap_a
+  2. cook_a
+  3. wrap_b
+  4. cook_b
+  5. wrap_c
+  6. cook_c
+  7. wrap_e
+  8. cook_e
+  9. wrap_d
+  10. cook_d
+Czas: 0.0087s
