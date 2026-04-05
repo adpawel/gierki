@@ -9,10 +9,8 @@ sys.path.insert(0, base_dir)
 sys.path.insert(0, aipython_dir)
 
 from aipython.stripsProblem import STRIPS_domain, Planning_problem, Strips, boolean
-from reachable_states import count_reachable_states
-from solver import solve, solve_subgoals
 from assignment.reachable_states import count_reachable_states
-from solver import init_output_file, write_section
+from solver import solve, solve_subgoals, init_output_file, write_section
 
 blocks = {'A', 'B', 'C', 'D'}
 tables = {'T1', 'T2'}
@@ -24,27 +22,7 @@ def clear(x):
     return f'clear_{x}'
 
 def heuristic(state, goal):
-    h = 0
-
-    target_support = {
-        'A': 'B',
-        'B': 'C',
-        'C': 'D',
-    }
-
-    for x, y in target_support.items():
-        if state.get(on(x, y), False):
-            continue
-
-        h += 2
-
-        if not state.get(clear(x), False):
-            h += 1
-
-        if y in blocks and not state.get(clear(y), False):
-            h += 1
-
-    return h
+    return sum(1 for feature, value in goal.items() if state.get(feature, False) != value)
 
 feature_domain_dict = {}
 
@@ -114,67 +92,137 @@ for a in blocks:
 
 domain = STRIPS_domain(feature_domain_dict, actions)
 
-initial_state = {}
+def make_empty_state():
+    state = {}
+    for b in blocks:
+        state[clear(b)] = False
+        for t in tables:
+            state[on(b, t)] = False
+        for b2 in blocks:
+            if b != b2:
+                state[on(b, b2)] = False
+    return state
 
-# domyślnie wszystko False
-for b in blocks:
-    initial_state[clear(b)] = False
-    for t in tables:
-        initial_state[on(b, t)] = False
-    for b2 in blocks:
-        if b != b2:
-            initial_state[on(b, b2)] = False
+def build_problem_1():
+    state = make_empty_state()
 
-# stan początkowy:
-# A na B, B na C, C na T1, D na T2
-initial_state[on('A', 'B')] = True
-initial_state[on('B', 'C')] = True
-initial_state[on('C', 'T1')] = True
-initial_state[on('D', 'T2')] = True
+    # A na B, B na C, C na T1, D na T2
+    state[on('A', 'B')] = True
+    state[on('B', 'C')] = True
+    state[on('C', 'T1')] = True
+    state[on('D', 'T2')] = True
 
-# clear są tylko bloki bez niczego na sobie
-initial_state[clear('A')] = True
-initial_state[clear('B')] = False
-initial_state[clear('C')] = False
-initial_state[clear('D')] = True
+    state[clear('A')] = True
+    state[clear('B')] = False
+    state[clear('C')] = False
+    state[clear('D')] = True
 
-goal = {
-    on('C', 'D'): True,
-    on('B', 'C'): True,
-    on('A', 'B'): True
-}
+    goal = {
+        on('C', 'D'): True,
+        on('B', 'C'): True,
+        on('A', 'B'): True
+    }
 
-problem = Planning_problem(domain, initial_state, goal)
+    subgoals = [
+        {on('C', 'D'): True},
+        {on('C', 'D'): True, on('B', 'C'): True},
+        goal
+    ]
 
-subgoals = [
-    {on('C', 'D'): True},
-    {on('C', 'D'): True, on('B', 'C'): True},
-    {on('C', 'D'): True, on('B', 'C'): True, on('A', 'B'): True},
+    return state, goal, subgoals
+
+def build_problem_2():
+    state = make_empty_state()
+
+    # A na T1, B na T2, C na D, D na T1
+    state[on('A', 'T1')] = True
+    state[on('B', 'T2')] = True
+    state[on('C', 'D')] = True
+    state[on('D', 'T1')] = True
+
+    state[clear('A')] = True
+    state[clear('B')] = True
+    state[clear('C')] = True
+    state[clear('D')] = False
+
+    goal = {
+        on('A', 'B'): True,
+        on('B', 'C'): True,
+        on('C', 'D'): True
+    }
+
+    subgoals = [
+        {on('C', 'D'): True},
+        {on('B', 'C'): True, on('C', 'D'): True},
+        goal
+    ]
+
+    return state, goal, subgoals
+
+def build_problem_3():
+    state = make_empty_state()
+
+    # A na T1, B na A, C na T2, D na T1
+    state[on('A', 'T1')] = True
+    state[on('B', 'A')] = True
+    state[on('C', 'T2')] = True
+    state[on('D', 'T1')] = True
+
+    state[clear('A')] = False
+    state[clear('B')] = True
+    state[clear('C')] = True
+    state[clear('D')] = True
+
+    goal = {
+        on('D', 'C'): True,
+        on('C', 'B'): True,
+        on('B', 'A'): True
+    }
+
+    subgoals = [
+        {on('D', 'C'): True},
+        {on('D', 'C'): True, on('C', 'B'): True},
+        goal
+    ]
+
+    return state, goal, subgoals
+
+problems = [
+    ("Problem 1", build_problem_1()),
+    ("Problem 2", build_problem_2()),
+    ("Problem 3", build_problem_3()),
 ]
 
-OUTPUT_FILE = os.path.join(base_dir, 'results_blocksworld2.txt')
+base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+OUTPUT_FILE = os.path.join(base_dir, 'results_blocksworld_all.txt')
+init_output_file(OUTPUT_FILE, 'BLOCKSWORLD - ALL PROBLEMS')
 
-init_output_file(OUTPUT_FILE, 'BLOCKSWORLD - RESULTS')
+for name, (initial_state, goal, subgoals) in problems:
+    write_section(OUTPUT_FILE, name)
+    print(f"\n{name}")
+    print("=" * 60)
 
-reachable = count_reachable_states(domain, initial_state)
-print('reachable states:', reachable)
-with open(OUTPUT_FILE, 'a') as f:
-    f.write(f"Osiągalne stany: {reachable}\n")
+    reachable = count_reachable_states(domain, initial_state)
+    print('reachable states:', reachable)
+    with open(OUTPUT_FILE, 'a', encoding='utf-8') as f:
+        f.write(f"Osiągalne stany: {reachable}\n")
 
-print('\n--- Rozwiązanie bez heurystyki ---\n')
-write_section(OUTPUT_FILE, 'Rozwiązanie bez heurystyki')
-solve(problem, output_file=OUTPUT_FILE)
+    problem = Planning_problem(domain, initial_state, goal)
 
-print('\n--- Rozwiązanie z heurystyką ---\n')
-write_section(OUTPUT_FILE, 'Rozwiązanie z heurystyką')
-solve(problem, heuristic, output_file=OUTPUT_FILE)
+    print('\n--- Rozwiązanie bez heurystyki ---\n')
+    write_section(OUTPUT_FILE, f'{name} - Rozwiązanie bez heurystyki')
+    solve(problem, output_file=OUTPUT_FILE)
 
-print('\n--- Rozwiązanie z podcelami ---\n')
-write_section(OUTPUT_FILE, 'Rozwiązanie z podcelami')
-solve_subgoals(subgoals, initial_state, domain, output_file=OUTPUT_FILE)
+    print('\n--- Rozwiązanie z heurystyką ---\n')
+    write_section(OUTPUT_FILE, f'{name} - Rozwiązanie z heurystyką')
+    solve(problem, heuristic, output_file=OUTPUT_FILE)
 
-print('\n--- Rozwiązanie z podcelami i heurystyką ---\n')
-write_section(OUTPUT_FILE, 'Rozwiązanie z podcelami i heurystyką')
-solve_subgoals(subgoals, initial_state, domain, heuristic, output_file=OUTPUT_FILE)
+    print('\n--- Rozwiązanie z podcelami ---\n')
+    write_section(OUTPUT_FILE, f'{name} - Rozwiązanie z podcelami')
+    solve_subgoals(subgoals, initial_state, domain, output_file=OUTPUT_FILE)
+
+    print('\n--- Rozwiązanie z podcelami i heurystyką ---\n')
+    write_section(OUTPUT_FILE, f'{name} - Rozwiązanie z podcelami i heurystyką')
+    solve_subgoals(subgoals, initial_state, domain, heuristic, output_file=OUTPUT_FILE)
 
 print(f'\nWyniki zapisane do: {OUTPUT_FILE}')
