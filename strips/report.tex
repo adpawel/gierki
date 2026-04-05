@@ -2,9 +2,11 @@
 
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
+\usepackage[polish]{babel}
 \usepackage{amsmath}
 \usepackage{geometry}
 \usepackage{listings}
+\usepackage{booktabs}
 
 \geometry{margin=2.5cm}
 
@@ -22,7 +24,9 @@ Celem projektu było zdefiniowanie problemów planowania w formalizmie STRIPS or
 
 Zgodnie z wymaganiami projektu zdefiniowano trzy problemy o przestrzeni stanów większej niż 50 oraz rozwiązania wymagające co najmniej 4 akcji.
 
+% ─────────────────────────────────────────────────────────────────────────────
 \section{Problem 1: Blocks World}
+% ─────────────────────────────────────────────────────────────────────────────
 
 \subsection{Opis problemu}
 
@@ -70,7 +74,6 @@ Z podcelami + heurystyka & 5 & 0.0086 \\
 \subsection{Znalezione plany}
 
 \paragraph{Bez heurystyki}
-Znaleziony plan:
 \begin{enumerate}
     \item \texttt{unstack\_A\_B\_T2}
     \item \texttt{unstack\_B\_C\_T2}
@@ -80,7 +83,6 @@ Znaleziony plan:
 \end{enumerate}
 
 \paragraph{Z heurystyką}
-Znaleziony plan:
 \begin{enumerate}
     \item \texttt{unstack\_A\_B\_T1}
     \item \texttt{unstack\_B\_C\_T2}
@@ -90,7 +92,6 @@ Znaleziony plan:
 \end{enumerate}
 
 \paragraph{Z podcelami}
-Znaleziony plan:
 \begin{enumerate}
     \item \texttt{unstack\_A\_B\_T2}
     \item \texttt{unstack\_B\_C\_T1}
@@ -100,7 +101,6 @@ Znaleziony plan:
 \end{enumerate}
 
 \paragraph{Z podcelami i heurystyką}
-Znaleziony plan:
 \begin{enumerate}
     \item \texttt{unstack\_A\_B\_T1}
     \item \texttt{unstack\_B\_C\_T2}
@@ -122,7 +122,9 @@ Podział na podcele:
 
 umożliwia stopniowe budowanie rozwiązania bez zwiększenia kosztu planu.
 
+% ─────────────────────────────────────────────────────────────────────────────
 \section{Problem 2: Dinner Planning}
+% ─────────────────────────────────────────────────────────────────────────────
 
 \subsection{Opis problemu}
 
@@ -131,7 +133,7 @@ Problem modeluje przygotowanie kolacji i prezentów dla pięciu miejsc. Każde m
 
 Celem jest uzyskanie dla każdego miejsca:
 \[
-dinner(x) = True,\quad present(x) = True
+dinner(x) = \text{True},\quad present(x) = \text{True}
 \]
 
 Liczba stanów osiągalnych wynosi $1024$.
@@ -143,7 +145,7 @@ Zastosowano heurystykę:
 h(s) = \text{liczba niespełnionych warunków celu}
 \]
 
-Jest to prosta, ale skuteczna heurystyka mierząca odległość od celu.
+Jest to prosta, ale skuteczna heurystyka mierząca odległość od celu. Jest dopuszczalna, gdyż każda akcja spełnia co najwyżej jeden warunek celu.
 
 \subsection{Wyniki}
 
@@ -163,92 +165,48 @@ Z podcelami + heurystyka & 10 & 0.0087 \\
 \subsection{Znalezione plany}
 
 \paragraph{Bez heurystyki}
-Znaleziony plan:
 \begin{enumerate}
-    \item \texttt{cook\_e}
-    \item \texttt{wrap\_c}
-    \item \texttt{wrap\_d}
-    \item \texttt{cook\_c}
-    \item \texttt{cook\_d}
-    \item \texttt{wrap\_a}
-    \item \texttt{wrap\_b}
-    \item \texttt{cook\_a}
-    \item \texttt{cook\_b}
-    \item \texttt{wrap\_e}
+    \item \texttt{cook\_e}, \texttt{wrap\_c}, \texttt{wrap\_d}, \texttt{cook\_c}, \texttt{cook\_d},
+          \texttt{wrap\_a}, \texttt{wrap\_b}, \texttt{cook\_a}, \texttt{cook\_b}, \texttt{wrap\_e}
 \end{enumerate}
 
 \paragraph{Z heurystyką}
-Znaleziony plan:
 \begin{enumerate}
-    \item \texttt{wrap\_c}
-    \item \texttt{cook\_c}
-    \item \texttt{wrap\_a}
-    \item \texttt{cook\_a}
-    \item \texttt{wrap\_e}
-    \item \texttt{cook\_e}
-    \item \texttt{wrap\_d}
-    \item \texttt{cook\_d}
-    \item \texttt{wrap\_b}
-    \item \texttt{cook\_b}
-\end{enumerate}
-
-\paragraph{Z podcelami}
-Znaleziony plan:
-\begin{enumerate}
-    \item \texttt{cook\_a}
-    \item \texttt{wrap\_a}
-    \item \texttt{cook\_b}
-    \item \texttt{wrap\_b}
-    \item \texttt{cook\_e}
-    \item \texttt{wrap\_c}
-    \item \texttt{wrap\_d}
-    \item \texttt{cook\_c}
-    \item \texttt{cook\_d}
-    \item \texttt{wrap\_e}
+    \item \texttt{wrap\_c}, \texttt{cook\_c}, \texttt{wrap\_a}, \texttt{cook\_a}, \texttt{wrap\_e},
+          \texttt{cook\_e}, \texttt{wrap\_d}, \texttt{cook\_d}, \texttt{wrap\_b}, \texttt{cook\_b}
 \end{enumerate}
 
 \paragraph{Z podcelami i heurystyką}
-Znaleziony plan:
 \begin{enumerate}
-    \item \texttt{wrap\_a}
-    \item \texttt{cook\_a}
-    \item \texttt{wrap\_b}
-    \item \texttt{cook\_b}
-    \item \texttt{wrap\_c}
-    \item \texttt{cook\_c}
-    \item \texttt{wrap\_e}
-    \item \texttt{cook\_e}
-    \item \texttt{wrap\_d}
-    \item \texttt{cook\_d}
+    \item \texttt{wrap\_a}, \texttt{cook\_a}, \texttt{wrap\_b}, \texttt{cook\_b}, \texttt{wrap\_c},
+          \texttt{cook\_c}, \texttt{wrap\_e}, \texttt{cook\_e}, \texttt{wrap\_d}, \texttt{cook\_d}
 \end{enumerate}
 
 \subsection{Analiza}
 
-Heurystyka skróciła czas obliczeń ponad 250-krotnie.
+Heurystyka skróciła czas obliczeń ponad 250-krotnie. Podcele zdefiniowano jako przygotowanie kolejnych podzbiorów miejsc, co uporządkowało proces planowania bez zwiększenia kosztu.
 
-Podcele zostały zdefiniowane jako:
-\begin{enumerate}
-\item przygotowanie jednego miejsca,
-\item przygotowanie dwóch miejsc,
-\item przygotowanie wszystkich miejsc.
-\end{enumerate}
-
-Dekompozycja nie zmieniła kosztu planu, ale uporządkowała proces planowania.
-
+% ─────────────────────────────────────────────────────────────────────────────
 \section{Problem 3: Problem relacyjny}
+% ─────────────────────────────────────────────────────────────────────────────
 
 \subsection{Opis problemu}
 
-Problem operuje na relacjach $S(x,y)$ i $R(x,y)$ dla pięciu obiektów.
+Problem operuje na relacjach $S(x,y)$ i $R(x,y)$ dla pięciu obiektów $\{a,b,c,d,e\}$.
+Akcje:
+\begin{itemize}
+  \item \texttt{op1}$(x_1, x_2, x_3)$: warunek $S(x_1,x_2) \wedge R(x_3,x_1)$; efekt $S(x_2,x_1) \wedge S(x_1,x_3) \wedge \neg R(x_3,x_1)$
+  \item \texttt{op2}$(x_1, x_2, x_3)$: warunek $S(x_3,x_1) \wedge R(x_2,x_2)$; efekt $S(x_1,x_3) \wedge \neg S(x_3,x_1)$
+\end{itemize}
 
-Stan początkowy zawiera łańcuch relacji:
+Stan początkowy:
 \[
-S(a,b), S(b,c), S(c,d), S(d,e)
+S(a,b),\ S(b,c),\ S(c,d),\ S(d,e),\quad R(x,x)\ \forall x,\quad R(c,a),\ R(d,b),\ R(e,c)
 \]
 
-Celem jest:
+Cel:
 \[
-S(b,a), S(c,b), S(d,c), S(e,d)
+S(b,a),\ S(c,b),\ S(d,c),\ S(e,d)
 \]
 
 Liczba stanów osiągalnych wynosi $1\,066\,992$.
@@ -278,51 +236,201 @@ Z podcelami + heurystyka & 4 & 0.0114 \\
 \subsection{Znalezione plany}
 
 \paragraph{Bez heurystyki}
-Znaleziony plan:
 \begin{enumerate}
-    \item \texttt{op1\_a\_b\_c}
-    \item \texttt{op2\_d\_c\_c}
-    \item \texttt{op1\_b\_c\_b}
-    \item \texttt{op1\_d\_e\_d}
+    \item \texttt{op1\_a\_b\_c},\ \texttt{op2\_d\_c\_c},\ \texttt{op1\_b\_c\_b},\ \texttt{op1\_d\_e\_d}
 \end{enumerate}
 
-\paragraph{Z heurystyką}
-Znaleziony plan:
+\paragraph{Z heurystyką / z podcelami / z podcelami i heurystyką}
 \begin{enumerate}
-    \item \texttt{op2\_c\_d\_b}
-    \item \texttt{op2\_d\_c\_c}
-    \item \texttt{op2\_b\_e\_a}
-    \item \texttt{op2\_e\_b\_d}
-\end{enumerate}
-
-\paragraph{Z podcelami}
-Znaleziony plan:
-\begin{enumerate}
-    \item \texttt{op2\_b\_e\_a}
-    \item \texttt{op2\_c\_d\_b}
-    \item \texttt{op2\_d\_c\_c}
-    \item \texttt{op2\_e\_b\_d}
-\end{enumerate}
-
-\paragraph{Z podcelami i heurystyką}
-Znaleziony plan:
-\begin{enumerate}
-    \item \texttt{op2\_b\_e\_a}
-    \item \texttt{op2\_c\_d\_b}
-    \item \texttt{op2\_d\_c\_c}
-    \item \texttt{op2\_e\_b\_d}
+    \item \texttt{op2\_b\_e\_a},\ \texttt{op2\_c\_d\_b},\ \texttt{op2\_d\_c\_c},\ \texttt{op2\_e\_b\_d}
 \end{enumerate}
 
 \subsection{Analiza}
 
-Heurystyka radykalnie zmniejszyła czas obliczeń (ponad 2000 razy). Podcele nie zmieniły kosztu planu, ale pozwoliły na bardziej uporządkowane budowanie rozwiązania.
+Heurystyka skróciła czas obliczeń ponad 2000-krotnie. Podcele ($S(b,a)$, następnie $S(c,b)$ itd.) pozwoliły na liniowe budowanie rozwiązania.
 
+% ─────────────────────────────────────────────────────────────────────────────
+\section{Problemy wymagające $\geq 20$ akcji}
+% ─────────────────────────────────────────────────────────────────────────────
+
+\subsection{Opis dziedziny}
+
+Wykorzystano rozszerzoną dziedzinę \emph{Birthday Dinner} z wymuszonym usuwaniem śmieci.
+Każde miejsce $x$ posiada cechy: \texttt{clean}$(x)$, \texttt{quiet}$(x)$, \texttt{garbage}$(x)$,
+\texttt{dinner}$(x)$, \texttt{present}$(x)$.
+
+Akcje:
+\begin{itemize}
+  \item \texttt{cook}$(x)$: wymaga \texttt{clean}$(x)$; daje \texttt{dinner}$(x)$
+  \item \texttt{wrap}$(x)$: wymaga \texttt{quiet}$(x)$; daje \texttt{present}$(x)$
+  \item \texttt{carry}$(x)$: wymaga \texttt{garbage}$(x)$; usuwa \texttt{garbage}$(x)$ i \texttt{clean}$(x)$
+  \item \texttt{dolly}$(x)$: wymaga \texttt{garbage}$(x)$; usuwa \texttt{garbage}$(x)$ i \texttt{quiet}$(x)$
+\end{itemize}
+
+\subsection{Wymuszenie minimalnej długości planu}
+
+Każde miejsce w stanie początkowym ma \texttt{garbage}$(x) = \text{True}$.
+Cel zawiera \texttt{garbage}$(x) = \text{False}$ dla wszystkich miejsc,
+co wymusza użycie \texttt{carry} lub \texttt{dolly}.
+
+Ponieważ:
+\begin{itemize}
+  \item \texttt{dolly}$(x)$ usuwa \texttt{quiet}$(x)$ -- po jego wykonaniu \texttt{wrap}$(x)$ jest niemożliwe,
+  \item \texttt{carry}$(x)$ usuwa \texttt{clean}$(x)$ -- po jego wykonaniu \texttt{cook}$(x)$ jest niemożliwe,
+\end{itemize}
+każde miejsce wymaga dokładnie dwóch akcji:
+\[
+\text{dinner}(x): \texttt{dolly}(x) + \texttt{cook}(x), \qquad
+\text{present}(x): \texttt{carry}(x) + \texttt{wrap}(x)
+\]
+
+\subsection{Heurystyka}
+
+We wszystkich trzech problemach stosowano heurystykę:
+\[
+h(s) = \sum_{(f,v)\,\in\,\text{cel}} \mathbf{1}[s(f) \neq v]
+\]
+tj. liczba niespełnionych warunków celu. Jest ona dopuszczalna, gdyż każda akcja
+może zmienić co najwyżej jeden warunek celu.
+
+% ─────────────────────────────────────────────────────────────────────────────
+\subsection{Problem 4 -- 20 akcji}
+
+\textbf{Miejsca:} $a,b,c,d,e$ (cel: \texttt{dinner}) oraz $f,g,h,i,j$ (cel: \texttt{present}). Łącznie 10 miejsc ze śmieciami.
+
+\textbf{Minimalne rozwiązanie:} $5 \times (\texttt{dolly}+\texttt{cook}) + 5 \times (\texttt{carry}+\texttt{wrap}) = 20$ akcji.
+
+\textbf{Podcele:}
+\begin{enumerate}
+  \item dinner dla $\{a,b\}$, present dla $\{f,g\}$, garbage usunięte (8 akcji)
+  \item dinner dla $\{a,b,c,d\}$, present dla $\{f,g,h,i\}$, garbage usunięte (16 akcji)
+  \item cel pełny (20 akcji)
+\end{enumerate}
+
+\begin{center}
+\begin{tabular}{|l|c|c|}
+\hline
+Metoda & Koszt & Czas [s] \\
+\hline
+Bez heurystyki & -- & $>500$ (timeout) \\
+Z heurystyką & -- & $>500$ (timeout) \\
+Z podcelami & -- & $>500$ (timeout) \\
+Z podcelami + heurystyka & 20 & 3.59 \\
+\hline
+\end{tabular}
+\end{center}
+
+\paragraph{Plan (z podcelami i heurystyką -- 20 akcji):}
+\begin{enumerate}
+  \item \texttt{carry\_f}, \texttt{wrap\_f}, \texttt{cook\_a}, \texttt{carry\_a},
+        \texttt{dolly\_b}, \texttt{carry\_g}, \texttt{wrap\_g}, \texttt{cook\_b}
+  \item \texttt{dolly\_d}, \texttt{carry\_i}, \texttt{wrap\_i}, \texttt{cook\_d},
+        \texttt{dolly\_c}, \texttt{carry\_h}, \texttt{wrap\_h}, \texttt{cook\_c}
+  \item \texttt{dolly\_e}, \texttt{carry\_j}, \texttt{wrap\_j}, \texttt{cook\_e}
+\end{enumerate}
+
+% ─────────────────────────────────────────────────────────────────────────────
+\subsection{Problem 5 -- 22 akcje}
+
+\textbf{Miejsca:} $a,b,c,d,e,f$ (cel: \texttt{dinner}) oraz $g,h,i,j,k$ (cel: \texttt{present}). Łącznie 11 miejsc.
+
+\textbf{Minimalne rozwiązanie:} $6 \times (\texttt{dolly}+\texttt{cook}) + 5 \times (\texttt{carry}+\texttt{wrap}) = 22$ akcje.
+
+\textbf{Podcele:}
+\begin{enumerate}
+  \item dinner dla $\{a,b\}$, present dla $\{g,h\}$ (8 akcji)
+  \item dinner dla $\{a,b,c,d\}$, present dla $\{g,h,i\}$ (14 akcji)
+  \item cel pełny (22 akcje)
+\end{enumerate}
+
+\begin{center}
+\begin{tabular}{|l|c|c|}
+\hline
+Metoda & Koszt & Czas [s] \\
+\hline
+Bez heurystyki & -- & $>500$ (timeout) \\
+Z heurystyką & -- & $>500$ (timeout) \\
+Z podcelami & -- & $>500$ (timeout) \\
+Z podcelami + heurystyka & 22 & 3.01 \\
+\hline
+\end{tabular}
+\end{center}
+
+\paragraph{Plan (z podcelami i heurystyką -- 22 akcje):}
+\begin{enumerate}
+  \item \texttt{cook\_a}, \texttt{carry\_a}, \texttt{carry\_h}, \texttt{wrap\_h},
+        \texttt{dolly\_b}, \texttt{carry\_g}, \texttt{wrap\_g}, \texttt{cook\_b}
+  \item \texttt{dolly\_d}, \texttt{carry\_i}, \texttt{wrap\_i}, \texttt{cook\_d},
+        \texttt{dolly\_c}, \texttt{cook\_c}
+  \item \texttt{dolly\_f}, \texttt{carry\_k}, \texttt{wrap\_k}, \texttt{cook\_f},
+        \texttt{dolly\_e}, \texttt{carry\_j}, \texttt{wrap\_j}, \texttt{cook\_e}
+\end{enumerate}
+
+% ─────────────────────────────────────────────────────────────────────────────
+\subsection{Problem 6 -- 24 akcje}
+
+\textbf{Miejsca:} $a,b,c,d,e,f$ (cel: \texttt{dinner}) oraz $g,h,i,j,k,l$ (cel: \texttt{present}). Łącznie 12 miejsc.
+
+\textbf{Minimalne rozwiązanie:} $6 \times (\texttt{dolly}+\texttt{cook}) + 6 \times (\texttt{carry}+\texttt{wrap}) = 24$ akcje.
+
+\textbf{Podcele:}
+\begin{enumerate}
+  \item dinner dla $\{a,b\}$, present dla $\{g,h\}$ (8 akcji)
+  \item dinner dla $\{a,b,c,d\}$, present dla $\{g,h,i,j\}$ (16 akcji)
+  \item dinner dla $\{a,b,c,d,e,f\}$, present dla $\{g,h,i,j\}$ (20 akcji)
+  \item cel pełny (24 akcje)
+\end{enumerate}
+
+\begin{center}
+\begin{tabular}{|l|c|c|}
+\hline
+Metoda & Koszt & Czas [s] \\
+\hline
+Bez heurystyki & -- & $>500$ (timeout) \\
+Z heurystyką & -- & $>500$ (timeout) \\
+Z podcelami & -- & $>500$ (timeout) \\
+Z podcelami + heurystyka & 24 & 4.07 \\
+\hline
+\end{tabular}
+\end{center}
+
+\paragraph{Plan (z podcelami i heurystyką -- 24 akcje):}
+\begin{enumerate}
+  \item \texttt{cook\_a}, \texttt{carry\_a}, \texttt{carry\_h}, \texttt{wrap\_h},
+        \texttt{dolly\_b}, \texttt{carry\_g}, \texttt{wrap\_g}, \texttt{cook\_b}
+  \item \texttt{carry\_j}, \texttt{wrap\_j}, \texttt{dolly\_d}, \texttt{carry\_i},
+        \texttt{wrap\_i}, \texttt{cook\_d}, \texttt{dolly\_c}, \texttt{cook\_c}
+  \item \texttt{dolly\_f}, \texttt{cook\_f}, \texttt{dolly\_e}, \texttt{cook\_e}
+  \item \texttt{carry\_k}, \texttt{wrap\_k}, \texttt{carry\_l}, \texttt{wrap\_l}
+\end{enumerate}
+
+% ─────────────────────────────────────────────────────────────────────────────
+\subsection{Analiza powyższych problemów}
+
+Heurystyka sama w sobie okazała się niewystarczająca dla problemów o tak dużej
+przestrzeni stanów -- nawet z heurystyką solver przekraczał limit 500 sekund.
+Dopiero \textbf{połączenie podcelów z heurystyką} pozwoliło znaleźć rozwiązanie
+w czasie poniżej 5 sekund.
+
+Wynika to z charakteru przestrzeni stanów: przy 10--12 miejscach każde z pięcioma
+cechami binarnymi przestrzeń liczy $2^{50}$--$2^{60}$ stanów teoretycznie osiągalnych,
+co sprawia, że przeszukiwanie bez prowadzenia jest praktycznie niemożliwe.
+Podcele redukują ten problem do serii mniejszych zadań, z których każde ma
+przestrzeń wielokrotnie mniejszą.
+
+% ─────────────────────────────────────────────────────────────────────────────
 \section{Podsumowanie}
+% ─────────────────────────────────────────────────────────────────────────────
 
 \begin{itemize}
 \item Heurystyki znacząco przyspieszają planowanie bez pogorszenia jakości rozwiązania.
 \item Dekompozycja na podcele jest skuteczna w problemach o strukturze sekwencyjnej.
-\item Wszystkie trzy problemy spełniają wymagania projektu: liczba stanów przekracza 50, a rozwiązania wymagają co najmniej 4 akcji.
+\item Dla dużych problemów ($\geq 20$ akcji) niezbędne jest \emph{łączne} stosowanie
+      podcelów i heurystyki -- żadna z tych technik osobno nie wystarcza.
+\item Wszystkie trzy problemy bazowe spełniają wymagania projektu: liczba stanów
+      przekracza 50, a rozwiązania wymagają co najmniej 4 akcji.
+\item Trzy dodatkowe problemy (Sekcja 4) mają rozwiązania optymalne o długości
+      odpowiednio 20, 22 i 24 akcji.
 \end{itemize}
 
 \end{document}
