@@ -132,22 +132,6 @@ def solve_subgoals_timed(subgoals, init, dplaces, use_heuristic, label, f, timeo
         _w(f'  {i}. {a}', f)
     _w(f'Czas: {elapsed:.4f}s', f)
 
-
-# ── definicje problemów ───────────────────────────────────────────────────────
-#
-# KLUCZOWY TRICK: cel zawiera garbage(x)=False dla wszystkich miejsc.
-# Jedyne akcje usuwające garbage to carry(x) i dolly(x):
-#   dolly(x): garbage->False, quiet->False  => tylko cook(x) możliwe potem
-#   carry(x): garbage->False, clean->False  => tylko wrap(x) możliwe potem
-#
-# Minimalne rozwiązanie na miejsce:
-#   dinner(x):  dolly(x) + cook(x)  = 2 akcje (wymuszone przez garbage w celu)
-#   present(x): carry(x) + wrap(x)  = 2 akcje (wymuszone przez garbage w celu)
-#
-# Problem 4: 5×(dolly+cook) + 5×(carry+wrap) = 20 akcji
-# Problem 5: 6×(dolly+cook) + 5×(carry+wrap) = 22 akcje
-# Problem 6: 6×(dolly+cook) + 6×(carry+wrap) = 24 akcje
-
 p4_din = list('abcde');  p4_pre = list('fghij');  places4 = p4_din + p4_pre
 p5_din = list('abcdef'); p5_pre = list('ghijk');  places5 = p5_din + p5_pre
 p6_din = list('abcdef'); p6_pre = list('ghijkl'); places6 = p6_din + p6_pre
@@ -160,7 +144,7 @@ def make_goal(din, pre, all_places):
     for x in pre:
         g[present(x)] = True
     for x in all_places:
-        g[garbage(x)] = False   # <-- to wymusza dolly lub carry
+        g[garbage(x)] = False
     return g
 
 goal4 = make_goal(p4_din, p4_pre, places4)

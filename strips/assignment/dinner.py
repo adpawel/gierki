@@ -138,7 +138,6 @@ def heuristic(state, goal):
 
 #* SUBGOALS
 
-# Set output file path relative to the parent strips directory
 base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 
 subgoals = [
@@ -151,10 +150,8 @@ subgoals = [
 from assignment.reachable_states import count_reachable_states
 from solver import init_output_file, write_section
 
-# Set output file path relative to the parent strips directory
 OUTPUT_FILE = os.path.join(base_dir, 'results_dinner.txt')
 
-# Initialize output file
 init_output_file(OUTPUT_FILE, 'DINNER PLANNING - RESULTS')
 
 print('reachable states:', count_reachable_states(domain, initial_state))
