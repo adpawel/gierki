@@ -1,0 +1,229 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{geometry}
+\usepackage{listings}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\geometry{margin=2.5cm}
+
+\title{Projekt 2: STRIPS}
+\author{Paweł Adamczyk, Dominika Bujnarowska}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section{Wstęp}
+
+Celem projektu było zdefiniowanie dziedziny STRIPS oraz rozwiązanie problemów planowania z wykorzystaniem algorytmu forward planning. Dodatkowo zastosowano heurystykę oraz dekompozycję problemu na podcele w celu poprawy wydajności.
+
+Rozwiązano trzy problemy o rosnącej złożoności (3, 4 i 5 miejsc), a każdy z nich analizowano dla czterech wariantów:
+\begin{itemize}
+    \item bez heurystyki,
+    \item z heurystyką,
+    \item z podcelami,
+    \item z podcelami i heurystyką.
+\end{itemize}
+
+Kod źródłowy projektu dostępny jest w repozytorium GitHub:
+
+\url{https://github.com/adpawel/gierki.git}
+
+\section{Opis dziedziny}
+
+Rozważana dziedzina to \textbf{birthday-dinner}.
+
+\subsection{Własności}
+
+Dla każdego miejsca $x$ zdefiniowano:
+\begin{itemize}
+    \item \texttt{clean(x)} -- miejsce jest czyste,
+    \item \texttt{quiet(x)} -- miejsce jest spokojne,
+    \item \texttt{garbage(x)} -- miejsce zawiera śmieci,
+    \item \texttt{dinner(x)} -- kolacja przygotowana,
+    \item \texttt{present(x)} -- prezent przygotowany.
+\end{itemize}
+
+\subsection{Akcje}
+
+Zdefiniowano cztery akcje:
+
+\begin{itemize}
+    \item \textbf{cook(x)}  
+    pre: \texttt{clean(x)}  
+    eff: \texttt{dinner(x)}
+
+    \item \textbf{wrap(x)}  
+    pre: \texttt{quiet(x)}  
+    eff: \texttt{present(x)}
+
+    \item \textbf{carry(x)}  
+    pre: \texttt{garbage(x)}  
+    eff: $\neg$\texttt{garbage(x)}, $\neg$\texttt{clean(x)}
+
+    \item \textbf{dolly(x)}  
+    pre: \texttt{garbage(x)}  
+    eff: $\neg$\texttt{garbage(x)}, $\neg$\texttt{quiet(x)}
+\end{itemize}
+
+\section{Heurystyka}
+
+Zastosowana heurystyka:
+
+\begin{quote}
+liczba niespełnionych warunków celu
+\end{quote}
+
+\begin{verbatim}
+h(s) = liczba warunków celu niespelnionych w stanie s
+\end{verbatim}
+
+Heurystyka przyspiesza wyszukiwanie, jednak w małych problemach jej wpływ jest ograniczony.
+
+\section{Zadania na 4 i 6 punktów}
+
+\subsection{Problemy}
+
+Rozważono trzy problemy:
+\begin{itemize}
+    \item Problem 1: 3 miejsca (6 akcji),
+    \item Problem 2: 4 miejsca (8 akcji),
+    \item Problem 3: 5 miejsc (10 akcji).
+\end{itemize}
+
+\subsection{Osiągalne stany}
+
+\begin{itemize}
+    \item $4^3 = 64$,
+    \item $4^4 = 256$,
+    \item $4^5 = 1024$.
+\end{itemize}
+
+Wyniki zostały potwierdzone eksperymentalnie (BFS).
+
+\subsection{Porównanie metod}
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{llccc}
+\toprule
+Problem & Metoda & Koszt & Czas [s] \\
+\midrule
+3 miejsca & bez heurystyki & 6 & 0.884 \\
+3 miejsca & heurystyka & 6 & 0.868\\
+3 miejsca & podcele & 6 & 1.711\\
+3 miejsca & podcele + heurystyka & 6 & 1.689 \\
+\midrule
+4 miejsca & bez heurystyki & 8 & 0.897\\
+4 miejsca & heurystyka & 8 & 0.869\\
+4 miejsca & podcele & 8 & 2.572 \\
+4 miejsca & podcele + heurystyka & 8 & 2.602 \\
+\midrule
+5 miejsc & bez heurystyki & 10 & 2.021\\
+5 miejsc & heurystyka & 10 & 0.873\\
+5 miejsc & podcele & 10 & 2.555 \\
+5 miejsc & podcele + heurystyka & 10 & 2.562\\
+\bottomrule
+\end{tabular}
+\caption{Porównanie wszystkich metod dla trzech problemów}
+\end{table}
+
+Podcele w tych problemach nie przyspieszyły działania – wprowadzały dodatkowy narzut obliczeniowy.
+
+\subsection{Przykładowy plan (5 miejsc)}
+
+\begin{verbatim}
+1. cook_e
+2. wrap_b
+3. cook_c
+4. wrap_a
+5. wrap_c
+6. wrap_e
+7. cook_d
+8. cook_a
+9. wrap_d
+10. cook_b
+\end{verbatim}
+
+\clearpage
+\section{Zadania na 8 punktów}
+
+Rozważono trudniejsze problemy o długości planu 20--24 akcje.
+
+Wprowadzono ograniczenie czasu:
+\begin{center}
+\textbf{timeout = 500 s}
+\end{center}
+
+\subsection{Porównanie metod}
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{lcccc}
+\toprule
+Problem & Akcje & Metoda & Czas [s] & Wynik \\
+\midrule
+4 & 20 & Bez heurystyki & $>500$ & timeout \\
+4 & 20 & Heurystyka & $>500$ & timeout \\
+4 & 20 & Podcele & $>500$ & timeout \\
+4 & 20 & Podcele + heurystyka & 3.59 & OK \\
+\midrule
+5 & 22 & Bez heurystyki & $>500$ & timeout \\
+5 & 22 & Heurystyka & $>500$ & timeout \\
+5 & 22 & Podcele & $>500$ & timeout \\
+5 & 22 & Podcele + heurystyka & 3.01 & OK \\
+\midrule
+6 & 24 & Bez heurystyki & $>500$ & timeout \\
+6 & 24 & Heurystyka & $>500$ & timeout \\
+6 & 24 & Podcele & $>500$ & timeout \\
+6 & 24 & Podcele + heurystyka & 4.07 & OK \\
+\bottomrule
+\end{tabular}
+\caption{Porównanie metod dla problemów złożonych}
+\end{table}
+
+\subsection{Przykładowy plan (problem 6)}
+
+\begin{verbatim}
+  1. cook_a
+  2. carry_a
+  3. carry_h
+  4. wrap_h
+  5. dolly_b
+  6. carry_g
+  7. wrap_g
+  8. cook_b
+  9. carry_j
+  10. wrap_j
+  11. dolly_d
+  12. carry_i
+  13. wrap_i
+  14. cook_d
+  15. dolly_c
+  16. cook_c
+  17. dolly_f
+  18. cook_f
+  19. dolly_e
+  20. cook_e
+  21. carry_k
+  22. wrap_k
+  23. carry_l
+  24. wrap_l
+\end{verbatim}
+
+\section{Wnioski}
+
+\begin{itemize}
+    \item Heurystyka poprawia wydajność dla większych problemów.
+    \item W małych problemach jej wpływ jest niewielki.
+    \item Podcele nie zawsze przyspieszają działanie – mogą wprowadzać narzut.
+    \item W dużych problemach (≥20 akcji) konieczne jest połączenie heurystyki i podcelów.
+    \item Metody bez heurystyki nie skalują się.
+\end{itemize}
+
+\section{Podsumowanie}
+
+Projekt pokazuje, że efektywność planowania STRIPS zależy od rozmiaru problemu. Proste problemy można rozwiązać bez heurystyk, natomiast dla większych konieczne są dodatkowe techniki optymalizacji.
+
+\end{document}

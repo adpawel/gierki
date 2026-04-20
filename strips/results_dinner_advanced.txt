@@ -1,0 +1,152 @@
+DINNER ADVANCED - PROBLEMY NA 8 PUNKTOW
+============================================================
+
+============================================================
+Problem 4 [8 pkt] - 20 akcji
+============================================================
+
+--- Rozwiazanie bez heurystyki ---
+Przekroczono limit czasu (500s).
+
+--- Rozwiazanie z heurystyka ---
+Przekroczono limit czasu (500s).
+
+--- Rozwiazanie z podcelami ---
+Przekroczono limit czasu (500s) dla podcelu 1.
+
+--- Rozwiazanie z podcelami i heurystyka ---
+
+Podcel 1: {'dinner_a': True, 'dinner_b': True, 'present_f': True, 'present_g': True, 'garbage_a': False, 'garbage_b': False, 'garbage_f': False, 'garbage_g': False}
+Akcje: [carry_f, wrap_f, cook_a, carry_a, dolly_b, carry_g, wrap_g, cook_b]
+
+Podcel 2: {'dinner_a': True, 'dinner_b': True, 'dinner_c': True, 'dinner_d': True, 'present_f': True, 'present_g': True, 'present_h': True, 'present_i': True, 'garbage_a': False, 'garbage_b': False, 'garbage_c': False, 'garbage_d': False, 'garbage_f': False, 'garbage_g': False, 'garbage_h': False, 'garbage_i': False}
+Akcje: [dolly_d, carry_i, wrap_i, cook_d, dolly_c, carry_h, wrap_h, cook_c]
+
+Podcel 3: {'dinner_a': True, 'dinner_b': True, 'dinner_c': True, 'dinner_d': True, 'dinner_e': True, 'present_f': True, 'present_g': True, 'present_h': True, 'present_i': True, 'present_j': True, 'garbage_a': False, 'garbage_b': False, 'garbage_c': False, 'garbage_d': False, 'garbage_e': False, 'garbage_f': False, 'garbage_g': False, 'garbage_h': False, 'garbage_i': False, 'garbage_j': False}
+Akcje: [dolly_e, carry_j, wrap_j, cook_e]
+
+Pelny plan z podcelami:
+  1. carry_f
+  2. wrap_f
+  3. cook_a
+  4. carry_a
+  5. dolly_b
+  6. carry_g
+  7. wrap_g
+  8. cook_b
+  9. dolly_d
+  10. carry_i
+  11. wrap_i
+  12. cook_d
+  13. dolly_c
+  14. carry_h
+  15. wrap_h
+  16. cook_c
+  17. dolly_e
+  18. carry_j
+  19. wrap_j
+  20. cook_e
+Czas: 3.5917s
+
+============================================================
+Problem 5 [8 pkt] - 22 akcje
+============================================================
+
+--- Rozwiazanie bez heurystyki ---
+Przekroczono limit czasu (500s).
+
+--- Rozwiazanie z heurystyka ---
+Przekroczono limit czasu (500s).
+
+--- Rozwiazanie z podcelami ---
+Przekroczono limit czasu (500s) dla podcelu 1.
+
+--- Rozwiazanie z podcelami i heurystyka ---
+
+Podcel 1: {'dinner_a': True, 'dinner_b': True, 'present_g': True, 'present_h': True, 'garbage_a': False, 'garbage_b': False, 'garbage_g': False, 'garbage_h': False}
+Akcje: [cook_a, carry_a, carry_h, wrap_h, dolly_b, carry_g, wrap_g, cook_b]
+
+Podcel 2: {'dinner_a': True, 'dinner_b': True, 'dinner_c': True, 'dinner_d': True, 'present_g': True, 'present_h': True, 'present_i': True, 'garbage_a': False, 'garbage_b': False, 'garbage_c': False, 'garbage_d': False, 'garbage_g': False, 'garbage_h': False, 'garbage_i': False}
+Akcje: [dolly_d, carry_i, wrap_i, cook_d, dolly_c, cook_c]
+
+Podcel 3: {'dinner_a': True, 'dinner_b': True, 'dinner_c': True, 'dinner_d': True, 'dinner_e': True, 'dinner_f': True, 'present_g': True, 'present_h': True, 'present_i': True, 'present_j': True, 'present_k': True, 'garbage_a': False, 'garbage_b': False, 'garbage_c': False, 'garbage_d': False, 'garbage_e': False, 'garbage_f': False, 'garbage_g': False, 'garbage_h': False, 'garbage_i': False, 'garbage_j': False, 'garbage_k': False}
+Akcje: [dolly_f, carry_k, wrap_k, cook_f, dolly_e, carry_j, wrap_j, cook_e]
+
+Pelny plan z podcelami:
+  1. cook_a
+  2. carry_a
+  3. carry_h
+  4. wrap_h
+  5. dolly_b
+  6. carry_g
+  7. wrap_g
+  8. cook_b
+  9. dolly_d
+  10. carry_i
+  11. wrap_i
+  12. cook_d
+  13. dolly_c
+  14. cook_c
+  15. dolly_f
+  16. carry_k
+  17. wrap_k
+  18. cook_f
+  19. dolly_e
+  20. carry_j
+  21. wrap_j
+  22. cook_e
+Czas: 3.0118s
+
+============================================================
+Problem 6 [8 pkt] - 24 akcje
+============================================================
+
+--- Rozwiazanie bez heurystyki ---
+Przekroczono limit czasu (500s).
+
+--- Rozwiazanie z heurystyka ---
+Przekroczono limit czasu (500s).
+
+--- Rozwiazanie z podcelami ---
+Przekroczono limit czasu (500s) dla podcelu 1.
+
+--- Rozwiazanie z podcelami i heurystyka ---
+
+Podcel 1: {'dinner_a': True, 'dinner_b': True, 'present_g': True, 'present_h': True, 'garbage_a': False, 'garbage_b': False, 'garbage_g': False, 'garbage_h': False}
+Akcje: [cook_a, carry_a, carry_h, wrap_h, dolly_b, carry_g, wrap_g, cook_b]
+
+Podcel 2: {'dinner_a': True, 'dinner_b': True, 'dinner_c': True, 'dinner_d': True, 'present_g': True, 'present_h': True, 'present_i': True, 'present_j': True, 'garbage_a': False, 'garbage_b': False, 'garbage_c': False, 'garbage_d': False, 'garbage_g': False, 'garbage_h': False, 'garbage_i': False, 'garbage_j': False}
+Akcje: [carry_j, wrap_j, dolly_d, carry_i, wrap_i, cook_d, dolly_c, cook_c]
+
+Podcel 3: {'dinner_a': True, 'dinner_b': True, 'dinner_c': True, 'dinner_d': True, 'dinner_e': True, 'dinner_f': True, 'present_g': True, 'present_h': True, 'present_i': True, 'present_j': True, 'garbage_a': False, 'garbage_b': False, 'garbage_c': False, 'garbage_d': False, 'garbage_e': False, 'garbage_f': False, 'garbage_g': False, 'garbage_h': False, 'garbage_i': False, 'garbage_j': False}
+Akcje: [dolly_f, cook_f, dolly_e, cook_e]
+
+Podcel 4: {'dinner_a': True, 'dinner_b': True, 'dinner_c': True, 'dinner_d': True, 'dinner_e': True, 'dinner_f': True, 'present_g': True, 'present_h': True, 'present_i': True, 'present_j': True, 'present_k': True, 'present_l': True, 'garbage_a': False, 'garbage_b': False, 'garbage_c': False, 'garbage_d': False, 'garbage_e': False, 'garbage_f': False, 'garbage_g': False, 'garbage_h': False, 'garbage_i': False, 'garbage_j': False, 'garbage_k': False, 'garbage_l': False}
+Akcje: [carry_k, wrap_k, carry_l, wrap_l]
+
+Pelny plan z podcelami:
+  1. cook_a
+  2. carry_a
+  3. carry_h
+  4. wrap_h
+  5. dolly_b
+  6. carry_g
+  7. wrap_g
+  8. cook_b
+  9. carry_j
+  10. wrap_j
+  11. dolly_d
+  12. carry_i
+  13. wrap_i
+  14. cook_d
+  15. dolly_c
+  16. cook_c
+  17. dolly_f
+  18. cook_f
+  19. dolly_e
+  20. cook_e
+  21. carry_k
+  22. wrap_k
+  23. carry_l
+  24. wrap_l
+Czas: 4.0712s

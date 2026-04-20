@@ -1,0 +1,68 @@
+PROBLEM 1 - RESULTS
+============================================================
+
+Osiągalne stany: 1066992
+
+--- Rozwiązanie bez heurystyki ---
+
+Znaleziono plan. Koszt: 4
+Plan:
+  1. op1_a_b_c
+  2. op2_d_c_c
+  3. op1_b_c_b
+  4. op1_d_e_d
+Czas: 10.8653s
+
+--- Rozwiązanie z heurystyką ---
+
+Znaleziono plan. Koszt: 4
+Plan:
+  1. op2_c_d_b
+  2. op2_d_c_c
+  3. op2_b_e_a
+  4. op2_e_b_d
+Czas: 0.0051s
+
+--- Rozwiązanie z podcelami ---
+
+
+Podcel 1: {'S_b_a': True}
+Akcje: [op2_b_e_a]
+
+Podcel 2: {'S_b_a': True, 'S_c_b': True}
+Akcje: [op2_c_d_b]
+
+Podcel 3: {'S_b_a': True, 'S_c_b': True, 'S_d_c': True}
+Akcje: [op2_d_c_c]
+
+Podcel 4: {'S_b_a': True, 'S_c_b': True, 'S_d_c': True, 'S_e_d': True}
+Akcje: [op2_e_b_d]
+
+Pełny plan z podcelami:
+  1. op2_b_e_a
+  2. op2_c_d_b
+  3. op2_d_c_c
+  4. op2_e_b_d
+Czas: 0.0190s
+
+--- Rozwiązanie z podcelami i heurystyką ---
+
+
+Podcel 1: {'S_b_a': True}
+Akcje: [op2_b_e_a]
+
+Podcel 2: {'S_b_a': True, 'S_c_b': True}
+Akcje: [op2_c_d_b]
+
+Podcel 3: {'S_b_a': True, 'S_c_b': True, 'S_d_c': True}
+Akcje: [op2_d_c_c]
+
+Podcel 4: {'S_b_a': True, 'S_c_b': True, 'S_d_c': True, 'S_e_d': True}
+Akcje: [op2_e_b_d]
+
+Pełny plan z podcelami:
+  1. op2_b_e_a
+  2. op2_c_d_b
+  3. op2_d_c_c
+  4. op2_e_b_d
+Czas: 0.0114s
