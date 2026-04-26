@@ -1,0 +1,525 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[polish]{babel}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{geometry}
+\usepackage{float}
+\usepackage{hyperref}
+
+\geometry{margin=2.5cm}
+
+\title{Sprawozdanie – Projekt 3: Podstawy Gymnasium}
+\author{Paweł Adamczyk i Dominika Bujnarowska}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\part{Środowisko dyskretne: CliffWalking}
+\textbf{Algorytm:} Q-Learning z tabelą wartości
+
+\section{Opis środowiska}
+Wybranym środowiskiem jest \texttt{CliffWalking-v1} z biblioteki Gymnasium. Jest to klasyczny problem planowania na siatce $4 \times 12$ pól, w którym agent porusza się w czterech kierunkach (góra, dół, lewo, prawo), próbując dotrzeć z lewego dolnego rogu siatki do prawego dolnego rogu, omijając krawędź urwiska.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{plansza.png}
+    \caption{Środowisko Cliff Walking}
+    \label{fig:cliff_env}
+\end{figure}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{ll}
+        \toprule
+        \textbf{Parametr} & \textbf{Wartość} \\
+        \midrule
+        Przestrzeń stanów & Discrete(48) – 48 pól siatki $4 \times 12$ \\
+        Przestrzeń akcji & Discrete(4) – góra, dół, lewo, prawo \\
+        Nagroda za krok & -1 pkt (każdy bezpieczny krok) \\
+        Nagroda za upadek & -100 pkt (teleportacja na start) \\
+        Wynik optymalny & -13 pkt (13 kroków bez upadku) \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+Środowisko zostało wybrane ze względu na w pełni dyskretny charakter przestrzeni stanów i akcji, co pozwala na bezpośrednie zastosowanie klasycznego algorytmu Q-Learning z tabelą wartości – bez konieczności dyskretyzacji.
+
+\section{Algorytm: Q-Learning}
+Q-Learning jest algorytmem uczenia ze wzmocnieniem typu \textit{off-policy}, który uczy się optymalnej funkcji wartości $Q(s, a)$ — przypisującej każdej parze (stan, akcja) oczekiwaną sumę zdyskontowanych nagród.
+
+Reguła aktualizacji ma postać równania Bellmana:
+\begin{equation*}
+    Q(s, a) \leftarrow Q(s, a) + \alpha \left[ r + \gamma \max_{a'} Q(s', a') \cdot (1 - \text{done}) - Q(s, a) \right]
+\end{equation*}
+
+Gdzie:
+\begin{itemize}
+    \item $\alpha = 0.1$ – współczynnik uczenia (\textit{learning rate})
+    \item $\gamma = 0.9$ – współczynnik dyskontowy (wymagany w projekcie)
+    \item $r$ – natychmiastowa nagroda ze środowiska
+    \item $\max_{a'} Q(s', a')$ – najlepsza znana wartość kolejnego stanu (\textit{greedy})
+\end{itemize}
+
+Tablica Q ma rozmiar $48 \times 4$ (stany $\times$ akcje) i jest inicjalizowana zerami. Agent korzysta ze strategii $\varepsilon$-zachłannej ($\varepsilon$-greedy): z prawdopodobieństwem $\varepsilon$ wykonuje losowaną akcję (eksploracja), a z prawdopodobieństwem $1-\varepsilon$ wybiera akcję o najwyższej wartości Q (eksploatacja).
+
+\section{Implementacja}
+Kod składa się z dwóch plików:
+\begin{itemize}
+    \item \texttt{q\_learning\_agent.py} – klasa \texttt{QLearningAgent} zawierająca tabelę Q oraz logikę wyboru akcji i aktualizacji
+    \item \texttt{cliff\_walking.ipynb} – notatnik z pętlą trenowania i wizualizacją wyników
+\end{itemize}
+
+\subsection*{Główna pętla uczenia}
+Funkcja \texttt{train\_agent()} enkapsuluje całą pętlę RL. W każdym epizodzie:
+\begin{enumerate}
+    \item agent obserwuje stan $s$ i wybiera akcję $a$ (strategia $\varepsilon$-greedy)
+    \item środowisko zwraca nagrodę $r$ oraz kolejny stan $s'$
+    \item tablica Q jest aktualizowana równaniem Bellmana
+    \item po epizodzie epsilon jest mnożony przez współczynnik wygaszania (\textit{decay})
+\end{enumerate}
+Wartość terminacji przekazywana do równania aktualizacji rozróżnia stan końcowy (wytrenowany, bez przyszłych nagród) od przerwania przez limit kroków (\textit{truncated}), co zapewnia poprawną propagację wartości Q.
+
+\section{Eksperymenty}
+Przeprowadzono eksperyment porównujący trzy strategie wygaszania parametru $\varepsilon$ na przestrzeni 500 epizodów. Wszystkie pozostałe hiperparametry ($\alpha=0.1$, $\gamma=0.9$) pozostawały stałe. Na wykresach widoczna jest średnia krocząca z okna 20 epizodów.
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{llcl}
+        \toprule
+        \textbf{Konfiguracja} & \textbf{start $\varepsilon$} & \textbf{decay} & \textbf{Wynik (ostatnie 50 ep.)} \\
+        \midrule
+        Stały $\varepsilon = 0.1$ & 0.1 & 1.0 (brak) & $\sim -40$ do $-60$ (duża wariancja) \\
+        Szybkie wygaszanie & 1.0 & 0.95 & $\sim -13$ (stabilnie optymalna) \\
+        Wolne wygaszanie & 1.0 & 0.99 & $\sim -13$ do $-20$ (wolniejsza konwergencja) \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\textwidth]{wykres1.png}
+    \caption{Porównanie krzywych uczenia i przebiegu wygaszania $\varepsilon$ dla trzech strategii eksploracji w CliffWalking.}
+\end{figure}
+
+\section{Opis procesu uczenia}
+\subsection*{Faza eksploracji (epizody 0–100)}
+Na początku procesu uczenia agent działa niemal losowo – wysoka wartość $\varepsilon$ powoduje częste spadki z urwiska i nagrody rzędu $-100$. W tym czasie tablica Q jest intensywnie zapełniana wstępnymi oszacowaniami. Krzywa uczenia wykazuje dużą wariancję.
+
+\subsection*{Faza przejściowa (epizody 100–300)}
+W miarę wygaszania $\varepsilon$ agent coraz częściej korzysta z wyuczonej tablicy Q. Wyniki stabilizują się i wyraźnie rosną. Szybkie wygaszanie (\texttt{decay=0.95}) wyprzedza wolniejsze – agent wcześniej przechodzi do eksploatacji poznanej ścieżki.
+
+\subsection*{Faza eksploatacji (epizody 300–500)}
+Po osiągnięciu $\varepsilon \approx 0$ obie wersje z wygaszaniem osiągają wynik bliski optimum ($-13$ pkt). Strategia ze stałym $\varepsilon=0.1$ nigdy nie osiąga pełnej stabilności ze względu na 10\% losowości.
+
+\section{Wnioski}
+\begin{itemize}
+    \item Q-Learning skutecznie rozwiązał problem CliffWalking, osiągając nagrodę $-13$.
+    \item Strategia wygaszania $\varepsilon$ ma krytyczny wpływ na jakość uczenia.
+    \item Współczynnik $\gamma=0.9$ pozwolił na poprawne zaplanowanie ścieżki omijającej urwisko.
+\end{itemize}
+
+\newpage
+\part{Środowisko ciągłe: CartPole-v1}
+
+\section{Opis środowiska i cel}
+
+Środowisko \texttt{CartPole-v1} z biblioteki Gymnasium modeluje klasyczny problem
+sterowania odwróconym wahadłem. Na wózku poruszającym się wzdłuż poziomego toru
+osadzony jest kij, który agent musi utrzymać w pionie — jedyną dostępną akcją
+jest pchnięcie wózka w lewo lub w prawo.
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{ll}
+        \toprule
+        \textbf{Parametr} & \textbf{Wartość} \\
+        \midrule
+        Przestrzeń obserwacji & Box(4,) – 4 zmienne rzeczywiste (ciągła) \\
+        Przestrzeń akcji & Discrete(2) – pchnięcie w lewo lub w prawo \\
+        Nagroda za krok & +1 pkt (każdy krok utrzymania kija) \\
+        Koniec epizodu & kąt kija $> 12°$ lub pozycja wózka $> 2{,}4$ \\
+        Wynik maksymalny & 500 pkt \\
+        \bottomrule
+    \end{tabular}
+    \caption{Parametry środowiska CartPole-v1.}
+\end{table}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.75\linewidth]{cartpole-env.png}
+    \caption{Środowisko CartPole-v1.}
+\end{figure}
+
+Kluczowa różnica względem \texttt{CliffWalking}: przestrzeń obserwacji jest
+\textbf{ciągła}. Wektor stanu zawiera cztery liczby rzeczywiste:
+pozycję wózka, jego prędkość, kąt kija i prędkość kątową kija.
+Klasyczny Q-Learning z tablicą wymaga skończonej przestrzeni stanów —
+konieczna jest zatem \textit{dyskretyzacja} lub zastosowanie głębokiej sieci
+neuronowej.
+
+W tej części sprawozdania prezentujemy oba podejścia:
+\begin{enumerate}
+    \item \textbf{Q-Learning z dyskretyzacją} — punkt odniesienia; pokazuje
+    ograniczenia podejścia tablicowego dla ciągłych przestrzeni obserwacji.
+    \item \textbf{Deep Q-Network (DQN)} — sieć neuronowa aproksymuje funkcję
+    $Q(s,a)$ bezpośrednio na ciągłym wektorze stanu.
+\end{enumerate}
+
+% ============================================================
+\section{Algorytm 1: Q-Learning z dyskretyzacją}
+% ============================================================
+
+\subsection{Idea dyskretyzacji}
+
+Każda z czterech zmiennych obserwacji jest mapowana na dyskretne kubełki
+(\textit{bins}) przy pomocy funkcji \texttt{np.digitize}. Przyjęto 6 progów
+na wymiar, co tworzy 7 kubełków i daje $7^4 = 2401$ możliwych stanów
+dyskretnych.
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{lll}
+        \toprule
+        \textbf{Zmienna} & \textbf{Zakres} & \textbf{Liczba progów} \\
+        \midrule
+        Pozycja wózka & $[-4{,}8;\; 4{,}8]$ & 6 \\
+        Prędkość wózka & $[-4;\; 4]$ & 6 \\
+        Kąt kija (rad) & $[-0{,}418;\; 0{,}418]$ & 6 \\
+        Prędkość kątowa kija & $[-4;\; 4]$ & 6 \\
+        \bottomrule
+    \end{tabular}
+    \caption{Parametry dyskretyzacji przestrzeni obserwacji.}
+\end{table}
+
+Tablica Q ma rozmiar $2401 \times 2$ i jest inicjalizowana zerami.
+Agent korzysta ze strategii $\varepsilon$-zachłannej identycznej jak
+w części pierwszej sprawozdania (CliffWalking), z hiperparametrami:
+$\alpha = 0{,}1$, $\varepsilon_0 = 1{,}0$, \textit{decay} $= 0{,}995$,
+$\varepsilon_{\min} = 0{,}01$.
+
+\subsection{Eksperyment: wpływ współczynnika dyskontowego $\gamma$}
+
+Przeprowadzono trening dla trzech wartości $\gamma \in \{0{,}5;\; 0{,}9;\; 0{,}99\}$
+przez 1500 epizodów. Metrykę porównawalności stanowi całkowita zdyskontowana
+nagroda z pierwszych 1000 epizodów przy $\gamma = 0{,}9$:
+
+\begin{equation*}
+    G = \sum_{i=0}^{999} \gamma^i \cdot R_i, \quad \gamma = 0{,}9
+\end{equation*}
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{p{2.5cm}p{3.5cm}p{3.5cm}p{4cm}}
+        \toprule
+        \textbf{$\gamma$} & \textbf{Wynik (ost. 100 ep.)} & \textbf{Zdysk. nagroda $G$} & \textbf{Charakterystyka} \\
+        \midrule
+        $0{,}5$  & $\sim 80{-}130$ pkt  & 209 & duża wariancja, niestabilna konwergencja \\
+        $0{,}9$  & $\sim 90{-}120$ pkt  & \textbf{229} & najgładszy wzrost, najwyższe $G$ \\
+        $0{,}99$ & $\sim 100{-}140$ pkt & 182 & wysokie szczyty, niestabilna propagacja \\
+        \bottomrule
+    \end{tabular}
+    \caption{Wyniki Q-Learningu z dyskretyzacją dla trzech wartości $\gamma$.
+    Zdyskontowana nagroda $G$ liczona z pierwszych 1000 epizodów przy $\gamma=0{,}9$.}
+\end{table}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.95\textwidth]{cartpole-q.png}
+    \caption{Krzywe uczenia Q-Learningu z dyskretyzacją (średnia krocząca, okno 50 epizodów)
+    dla trzech wartości $\gamma$. Linia przerywana oznacza maksymalny wynik 500~pkt.}
+    \label{fig:ql_gamma}
+\end{figure}
+
+\subsection{Opis procesu uczenia i interpretacja $\gamma$}
+
+W fazie eksploracji (epizody 0–400) wszystkie konfiguracje zachowują się
+niemal identycznie — wysoki $\varepsilon$ powoduje głównie losowe akcje
+i nagrody rzędu 20–40 pkt. Różnice ujawniają się po epizodzie 400,
+gdy $\varepsilon$ opada poniżej 0{,}1.
+
+\begin{itemize}
+    \item \textbf{$\gamma = 0{,}5$ (myślenie krótkoterminowe):}
+    Agent silnie premiuje nagrody z najbliższego kroku.
+    Reaguje szybko na chwilowe zagrożenia, lecz nie buduje strategii
+    długofalowej. Skutkuje to dużą wariancją i brakiem stabilnego
+    optimum — mimo że lokalne reakcje są poprawne, agent nie potrafi
+    zaplanować utrzymania kija przez dłuższy czas.
+    Zdyskontowana nagroda $G = 209$ jest najniższa spośród
+    konfiguracji z wygaszaniem.
+
+    \item \textbf{$\gamma = 0{,}9$ (wymagany projektem):}
+    Balans między nagrodami natychmiastowymi a odległymi.
+    Daje najgładszą krzywą uczenia i najwyższą zdyskontowaną nagrodę
+    $G = 229$. W połączeniu z dyskretyzacją jest to najstabilniejsza
+    konfiguracja — agent konsekwentnie poprawia wyuczoną politykę
+    bez wyraźnych regresji.
+
+    \item \textbf{$\gamma = 0{,}99$ (planowanie długoterminowe):}
+    Teoretycznie powinno sprzyjać utrzymaniu kija przez 500 kroków,
+    jednak przy niedokładnej dyskretyzacji błędy w szacowaniu
+    odległych stanów kumulują się podczas propagacji wstecznej.
+    Aktualizacje Bellmana stają się niestabilne — stąd pomimo
+    chwilowych szczytów powyżej 140 pkt, zdyskontowana nagroda
+    $G = 182$ jest \emph{najniższa} ze wszystkich trzech wartości.
+\end{itemize}
+
+\subsection{Ograniczenia dyskretyzacji}
+
+Po epizodzie 900 wszystkie konfiguracje osiągają plateau w przedziale
+100–140 pkt, niezależnie od wartości $\gamma$. Wynik ten nie pochodzi
+z błędu implementacji — jest \textbf{sufitem dyskretyzacji}:
+przy 7 kubełkach na wymiar zbyt wiele różnych stanów fizycznych trafia
+do tego samego indeksu tablicy Q, uniemożliwiając dalsze rozróżnianie
+akcji. Zwiększenie liczby kubełków poprawia dokładność, ale
+wykładniczo zwiększa liczbę stanów do odwiedzenia ($N^4$ dla $N$ kubełków),
+wydłużając czas eksploracji ponad praktyczne możliwości.
+
+Rozwiązaniem jest bezpośrednia aproksymacja $Q(s,a)$ siecią neuronową,
+co eliminuje konieczność dyskretyzacji.
+
+% ============================================================
+\section{Algorytm 2: Deep Q-Network (DQN)}
+% ============================================================
+
+\subsection{Idea i kluczowe mechanizmy}
+
+DQN zastępuje tablicę Q siecią neuronową, która dla dowolnego ciągłego
+wektora stanu $s$ zwraca wartości $Q(s,a)$ dla każdej akcji.
+Implementacja opiera się na oficjalnym tutorialu PyTorch i zawiera
+dwa mechanizmy stabilizujące uczenie:
+
+\begin{enumerate}
+    \item \textbf{Experience Replay:} przejścia $(s, a, r, s')$ są
+    zapisywane do bufora (\textit{Replay Memory}) o pojemności 10\,000
+    i losowane w mini-batchach po 256 próbek. Przerywa to korelację
+    czasową między kolejnymi aktualizacjami.
+
+    \item \textbf{Target Network z soft update:} zamiast kopiowania
+    wag co $N$ kroków (hard update), target network jest aktualizowana
+    co krok według reguły:
+    \begin{equation*}
+        \theta_{\text{target}} \leftarrow \tau \cdot \theta_{\text{policy}}
+        + (1-\tau) \cdot \theta_{\text{target}}, \quad \tau = 0{,}01
+    \end{equation*}
+    Wagi target network zmieniają się \emph{płynnie}, co eliminuje
+    skokowe destabilizacje charakterystyczne dla hard update.
+\end{enumerate}
+
+Jako funkcję straty użyto Huber loss (\texttt{SmoothL1Loss}),
+a gradienty są przycinane do wartości bezwzględnej 100
+(\textit{gradient clipping}).
+
+\subsection{Dwie architektury sieci}
+
+Porównano dwie konfiguracje architektury sieci:
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{lll}
+        \toprule
+        \textbf{Architektura} & \textbf{Warstwy} & \textbf{Parametry} \\
+        \midrule
+        \texttt{DQN\_128x128} & $4 \to 128 \to 128 \to 2$ & 18\,818 \\
+        \texttt{DQN\_128x64}  & $4 \to 128 \to 64  \to 2$ & 9\,474  \\
+        \bottomrule
+    \end{tabular}
+    \caption{Porównane architektury sieci neuronowej. Aktywacja ReLU po każdej
+    warstwie ukrytej. Optymalizator AdamW z \texttt{amsgrad=True}.}
+\end{table}
+
+\subsection{Przeszukiwanie hiperparametrów}
+
+Przetestowano 3 konfiguracje hiperparametrów dla każdej architektury
+(łącznie 6 treningów po 600 epizodów). Zmieniano jeden parametr
+względem konfiguracji bazowej, aby ocenić jego izolowany wpływ.
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{llccc}
+        \toprule
+        \textbf{Konfiguracja} & \textbf{Zmiana} & \textbf{BATCH} & \textbf{LR} & \textbf{EPS\_DECAY} \\
+        \midrule
+        bazowa & — & 256 & $5 \cdot 10^{-4}$ & 500 \\
+        wolniejszy decay & dłuższa eksploracja & 256 & $5 \cdot 10^{-4}$ & 1000 \\
+        niższe LR & ostrożniejsze aktualizacje & 256 & $1 \cdot 10^{-4}$ & 500 \\
+        \bottomrule
+    \end{tabular}
+    \caption{Siatka hiperparametrów. Pozostałe parametry stałe:
+    $\gamma = 0{,}99$, $\varepsilon_0 = 0{,}9$, $\varepsilon_{\min} = 0{,}05$,
+    TAU $= 0{,}01$.}
+\end{table}
+
+\textbf{Metryka optymalizacji:} całkowita zdyskontowana nagroda
+z 600 epizodów przy $\gamma = 0{,}99$:
+\begin{equation*}
+    G_{\text{DQN}} = \sum_{i=0}^{599} \gamma^i \cdot D_i, \quad \gamma = 0{,}99
+\end{equation*}
+gdzie $D_i$ to czas trwania $i$-tego epizodu (równy sumie nagród, bo nagroda = +1 co krok).
+
+\subsection{Wyniki przeszukiwania hiperparametrów}
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{llr}
+        \toprule
+        \textbf{Architektura} & \textbf{Konfiguracja} & \textbf{Zdysk. nagroda $G_{\text{DQN}}$} \\
+        \midrule
+        \texttt{DQN\_128x128} & bazowa           & \textbf{17\,902} \\
+        \texttt{DQN\_128x64}  & bazowa           & 16\,747 \\
+        \texttt{DQN\_128x128} & wolniejszy decay & 16\,317 \\
+        \texttt{DQN\_128x64}  & wolniejszy decay & 10\,725 \\
+        \texttt{DQN\_128x128} & niższe LR        & 2\,046  \\
+        \texttt{DQN\_128x64}  & niższe LR        & 1\,221  \\
+        \bottomrule
+    \end{tabular}
+    \caption{Ranking konfiguracji DQN według zdyskontowanej nagrody $G_{\text{DQN}}$
+    z 600 epizodów ($\gamma = 0{,}99$). Najlepsza konfiguracja: \texttt{DQN\_128x128} bazowa.}
+\end{table}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\textwidth]{dqn-128x64-hp.png}
+    \caption{Krzywe uczenia dla architektury \texttt{DQN\_128x64} — porównanie
+    trzech konfiguracji hiperparametrów.}
+    \label{fig:dqn_128x64}
+\end{figure}
+
+\subsection{Interpretacja wyników}
+
+Wyniki wykazują wyraźny wzorzec:
+
+\begin{itemize}
+    \item \textbf{Konfiguracja bazowa ($G \approx 17\,900 / 16\,700$):}
+    Domyślne parametry z tutoriala PyTorch okazały się najlepsze.
+    $\varepsilon$ opada do minimum po $\approx 1500$ krokach
+    (kilkanaście epizodów), co pozwala agentowi szybko przejść
+    do eksploatacji wyuczonej polityki.
+
+    \item \textbf{Wolniejszy decay ($G \approx 16\,300 / 10\,700$):}
+    Wydłużenie eksploracji do $\approx 3000$ kroków (EPS\_DECAY=1000)
+    pozwala agentowi dokładniej poznać przestrzeń stanów, ale opóźnia
+    konwergencję. Dla \texttt{DQN\_128x64} różnica jest znaczna
+    ($-36\%$), co sugeruje że mniejsza sieć potrzebuje mniej danych
+    do nauki stabilnej polityki.
+
+    \item \textbf{Niższe LR ($G \approx 2\,046 / 1\,221$):}
+    Obniżenie LR z $5 \cdot 10^{-4}$ do $1 \cdot 10^{-4}$ drastycznie
+    pogarsza wyniki — przy 600 epizodach sieć nie zdąża
+    nauczyć się użytecznej polityki. Mechanizm soft update
+    z $\tau = 0{,}01$ wymaga stosunkowo wysokiego LR, aby target network
+    nadążał za poprawiającą się siecią główną.
+\end{itemize}
+
+% ============================================================
+\section{Porównanie algorytmów: Q-Learning vs DQN}
+% ============================================================
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\textwidth]{cartpole-final-comparison.png}
+    \caption{Porównanie końcowe: Q-Learning z dyskretyzacją ($\gamma = 0{,}9$)
+    vs najlepsza konfiguracja DQN (\texttt{DQN\_128x128}, bazowa, $\gamma = 0{,}99$).
+    Średnia krocząca z okna 50 epizodów.}
+    \label{fig:final_comparison}
+\end{figure}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{p{4.5cm}p{3cm}p{3cm}p{2.5cm}}
+        \toprule
+        \textbf{Algorytm} & \textbf{Repr.\ stanów} & \textbf{Wynik (ost.\ 100 ep.)} & \textbf{$G$ (1000 ep.)} \\
+        \midrule
+        Q-Learning, $\gamma = 0{,}5$ & dyskretna & $80{-}130$ pkt  & 209 \\
+        Q-Learning, $\gamma = 0{,}9$ & dyskretna & $90{-}120$ pkt  & \textbf{229} \\
+        Q-Learning, $\gamma = 0{,}99$ & dyskretna & $100{-}140$ pkt & 182 \\
+        \midrule
+        DQN 128x128 [bazowa]          & ciągła & $\approx 500$ pkt & \multirow{2}{*}{$\sim 17\,900$} \\
+        \quad $\gamma = 0{,}99$       &        &                   & \\
+        \bottomrule
+    \end{tabular}
+    \caption{Zbiorcze porównanie algorytmów. $G$ dla Q-Learningu liczone przy $\gamma=0{,}9$
+    z 1000 epizodów; dla DQN przy $\gamma=0{,}99$ z 600 epizodów.}
+\end{table}
+
+Różnica między algorytmami jest fundamentalna:
+
+\begin{itemize}
+    \item Q-Learning z dyskretyzacją utyka na plateau $\sim 140$ pkt
+    (28\% maksimum) niezależnie od $\gamma$ i liczby epizodów.
+    Jest to ograniczenie reprezentacji, nie algorytmu.
+
+    \item DQN osiąga wynik $\approx 500$ pkt (maksimum środowiska)
+    po kilkuset epizodach. Sieć neuronowa aproksymuje $Q(s,a)$
+    na ciągłym wektorze stanu bez utraty informacji.
+
+    \item Kluczowym ulepszeniem DQN względem naiwnego Q-Learningu
+    z siecią jest \textbf{soft update} target network ($\tau = 0{,}01$
+    co krok). W porównaniu z hard update co $N$ kroków, wagi
+    target network zmieniają się płynnie — eliminuje to skokowe
+    destabilizacje, które prowadziły do \textit{catastrophic forgetting}
+    (gwałtownego spadku wyniku z $\sim 450$ do $\sim 60$ pkt
+    obserwowanego przy hard update).
+\end{itemize}
+
+% ============================================================
+\section{Wizualizacja wytrenowanego agenta}
+% ============================================================
+
+Po zakończeniu treningu najlepsza sieć (\texttt{DQN\_128x128}, konfiguracja bazowa)
+jest zapisywana do pliku \texttt{best\_policy\_net.pt}.
+Plik \texttt{cartpole\_visualize.py} ładuje zapisany model i uruchamia
+animację w czasie rzeczywistym przy użyciu biblioteki \texttt{pygame}.
+
+Agent działa czysto zachłannie — bez eksploracji ($\varepsilon = 0$).
+Wyświetlane są: aktualny kąt kija, pozycja wózka, numer kroku
+oraz suma nagród. Sterowanie: klawisz \textbf{R} resetuje epizod,
+\textbf{Q} kończy wizualizację.
+
+% ============================================================
+\section{Wnioski}
+% ============================================================
+
+\begin{enumerate}
+    \item \textbf{Dyskretyzacja tworzy sufit.}
+    Q-Learning z tablicą osiąga $\sim 100{-}140$ pkt (20–28\% maksimum)
+    niezależnie od $\gamma$. Sufit wynika z utraty informacji przy
+    mapowaniu stanów na kubełki — nie jest błędem implementacji.
+
+    \item \textbf{Wpływ $\gamma$ na Q-Learning.}
+    $\gamma = 0{,}9$ daje najwyższą zdyskontowaną nagrodę ($G = 229$)
+    i najstabilniejsze uczenie. $\gamma = 0{,}99$ jest
+    kontr-produktywne przy dyskretyzacji: błędy kubełkowania kumulują
+    się przy propagacji długoterminowych wartości Q, obniżając $G$
+    do 182. $\gamma = 0{,}5$ daje dużą wariancję i pośrednią wartość
+    $G = 209$.
+
+    \item \textbf{DQN eliminuje ograniczenia dyskretyzacji.}
+    Najlepsza konfiguracja (\texttt{DQN\_128x128}, bazowa) osiąga
+    zdyskontowaną nagrodę $G_{\text{DQN}} = 17\,902$ — o rzędy
+    wielkości wyższą niż Q-Learning — i regularnie osiąga maksymalny
+    wynik 500 pkt.
+
+    \item \textbf{Soft update jest kluczowy dla stabilności.}
+    $\tau = 0{,}01$ co krok eliminuje catastrophic forgetting.
+    Przy hard update obserwowano gwałtowne restarty uczenia;
+    przy soft update krzywa rośnie monotonicznie.
+
+    \item \textbf{LR ma dominujący wpływ na wyniki DQN.}
+    Obniżenie LR z $5 \cdot 10^{-4}$ do $1 \cdot 10^{-4}$
+    redukuje $G$ o $\sim 89\%$ dla obu architektur —
+    jest to najważniejszy hiperparametr przy 600 epizodach treningu.
+    Prędkość eksploracji (EPS\_DECAY) ma umiarkowany wpływ.
+
+    \item \textbf{Architektura sieci ma drugorzędne znaczenie dla CartPole.}
+    \texttt{DQN\_128x128} ($G = 17\,902$) nieznacznie wyprzedza
+    \texttt{DQN\_128x64} ($G = 16\,747$) przy konfiguracji bazowej.
+    Różnica wynosi $\sim 7\%$ — CartPole jest wystarczająco proste,
+    by obie architektury skutecznie je rozwiązywały.
+\end{enumerate}
+
+\end{document}
