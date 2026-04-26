@@ -51,13 +51,13 @@ Projekt implementuje i porównuje algorytmy uczenia ze wzmocnieniem w dwóch śr
 
 ---
 
-## Środowisko 1: CliffWalking
+### Środowisko 1: CliffWalking
 
 Klasyczny problem planowania na siatce 4×12, w którym agent musi dotrzeć z lewego do prawego dolnego rogu siatki, omijając krawędź urwiska. Przestrzeń stanów i akcji jest w pełni dyskretna, co pozwala na bezpośrednie zastosowanie Q-Learningu z tablicą wartości.
 
 Przeprowadzono eksperymenty z trzema strategiami wygaszania parametru ε, porównując ich wpływ na szybkość konwergencji i stabilność wyników.
 
-## Środowisko 2: CartPole-v1
+### Środowisko 2: CartPole-v1
 
 Problem sterowania odwróconym wahadłem z **ciągłą** przestrzenią obserwacji (4 zmienne rzeczywiste). Zaimplementowano i porównano dwa algorytmy:
 
@@ -68,7 +68,7 @@ Przeprowadzono przeszukiwanie hiperparametrów dla dwóch architektur sieci (128
 
 ---
 
-## Struktura plików
+### Struktura plików
 
 ```text
 gymnasium/
@@ -88,7 +88,7 @@ gymnasium/
 
 ---
 
-## Uruchamianie
+### Uruchamianie
 
 1. Zainstaluj zależności:
    ```bash
