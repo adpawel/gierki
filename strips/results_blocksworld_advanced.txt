@@ -1,0 +1,94 @@
+BLOCKSWORLD - ADVANCED
+============================================================
+
+
+--- Problem 4 ---
+
+
+--- Problem 4 - Rozwiązanie bez heurystyki ---
+
+Znaleziono plan. Koszt: 9
+Plan:
+  1. unstack_F_D_T1
+  2. unstack_D_B_T2
+  3. stack_D_F_T2
+  4. stack_B_D_T2
+  5. unstack_E_C_T2
+  6. stack_E_B_T2
+  7. unstack_C_A_T2
+  8. stack_C_E_T2
+  9. stack_A_C_T1
+Czas: 889.7332s
+
+--- Problem 4 - Rozwiązanie z heurystyką ---
+
+Znaleziono plan. Koszt: 9
+Plan:
+  1. unstack_F_D_T1
+  2. unstack_E_C_T1
+  3. unstack_D_B_T2
+  4. unstack_C_A_T1
+  5. stack_D_F_T2
+  6. stack_B_D_T2
+  7. stack_E_B_T1
+  8. stack_C_E_T1
+  9. stack_A_C_T1
+Czas: 0.1145s
+
+--- Problem 4 - Rozwiązanie z podcelami ---
+
+
+Podcel 1: {'on_F_T1': True, 'on_D_F': True, 'on_C_T1': False, 'on_B_T1': False, 'on_A_T1': False, 'on_E_T1': False}
+Akcje: [unstack_E_C_T2, unstack_C_A_T2, unstack_F_D_T1, unstack_D_B_T1, stack_A_B_T1, stack_D_F_T1]
+
+Podcel 2: {'on_F_T1': True, 'on_D_F': True, 'on_B_D': True, 'on_E_B': True, 'on_C_T1': False, 'on_A_T1': False}
+Akcje: [unstack_A_B_T2, stack_B_D_T2, stack_E_B_T2]
+
+Podcel 3: {'on_F_T1': True, 'on_D_F': True, 'on_B_D': True, 'on_E_B': True, 'on_C_E': True, 'on_A_C': True}
+Akcje: [stack_C_E_T2, stack_A_C_T2]
+
+Pełny plan z podcelami:
+  1. unstack_E_C_T2
+  2. unstack_C_A_T2
+  3. unstack_F_D_T1
+  4. unstack_D_B_T1
+  5. stack_A_B_T1
+  6. stack_D_F_T1
+  7. unstack_A_B_T2
+  8. stack_B_D_T2
+  9. stack_E_B_T2
+  10. stack_C_E_T2
+  11. stack_A_C_T2
+Czas: 18.0089s
+
+--- Problem 4 - Rozwiązanie z podcelami i heurystyką ---
+
+
+Podcel 1: {'on_F_T1': True, 'on_D_F': True, 'on_C_T1': False, 'on_B_T1': False, 'on_A_T1': False, 'on_E_T1': False}
+Akcje: [unstack_F_D_T1, unstack_E_C_T2, unstack_D_B_T2, unstack_C_A_T2, stack_A_C_T1, stack_D_F_T2]
+
+Podcel 2: {'on_F_T1': True, 'on_D_F': True, 'on_B_D': True, 'on_E_B': True, 'on_C_T1': False, 'on_A_T1': False}
+Akcje: [stack_B_D_T2, stack_E_B_T2]
+
+Podcel 3: {'on_F_T1': True, 'on_D_F': True, 'on_B_D': True, 'on_E_B': True, 'on_C_E': True, 'on_A_C': True}
+Akcje: [unstack_A_C_T1, stack_C_E_T2, stack_A_C_T1]
+
+Pełny plan z podcelami:
+  1. unstack_F_D_T1
+  2. unstack_E_C_T2
+  3. unstack_D_B_T2
+  4. unstack_C_A_T2
+  5. stack_A_C_T1
+  6. stack_D_F_T2
+  7. stack_B_D_T2
+  8. stack_E_B_T2
+  9. unstack_A_C_T1
+  10. stack_C_E_T2
+  11. stack_A_C_T1
+Czas: 0.0817s
+
+--- Problem 5 ---
+
+
+--- Problem 5 - Rozwiązanie bez heurystyki ---
+
