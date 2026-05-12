@@ -147,7 +147,7 @@ class ParkingEnv(gym.Env):
 
         # NAGRODA ZA DOBRY KĄT: gdy agent jest blisko, liczy się też orientacja
         if dist < 150:
-            reward -= angle_diff * 0.002  # kara rośnie z bliskością celu
+            reward -= angle_diff * 0.004  # kara rośnie z bliskością celu
 
         # KARA ZA ZBLIŻANIE SIĘ DO PRZESZKÓD (strefa ostrzeżenia: 80px)
         if dist_to_obs1 < 80:
@@ -158,8 +158,8 @@ class ParkingEnv(gym.Env):
         terminated = False
         truncated = False
 
-        # WARUNEK ZWYCIĘSTWA (lekko rozluźniony: dist<30, kąt<20, prędkość<1.5)
-        if dist < 30 and angle_diff < 20 and abs(self.car_speed) < 1.5:
+        # WARUNEK ZWYCIĘSTWA
+        if dist < 5 and angle_diff < 3 and abs(self.car_speed) < 0.5:
             reward = 200.0
             terminated = True
 

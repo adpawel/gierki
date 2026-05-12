@@ -12,7 +12,6 @@ from parking_env import ParkingEnv
 # Wybór modelu do załadowania
 # Użycie:
 #   python play.py              -> ładuje najlepszy / finalny model
-#   python play.py best         -> ładuje best_model/best_model.zip
 #   python play.py checkpoint   -> pokazuje listę checkpointów do wyboru
 #   python play.py 0040000      -> ładuje checkpoints/model_0040000.zip
 # -------------------------------------------------------
@@ -33,14 +32,6 @@ def select_model():
         step = os.path.basename(model_path).replace("model_", "")
         norm_path = f"checkpoints/vec_normalize_{step}.pkl"
         return model_path, norm_path
-
-    elif arg == "best":
-        return "best_model/best_model", "vec_normalize.pkl"
-
-    elif arg == "auto":
-        if os.path.exists("best_model/best_model.zip"):
-            return "best_model/best_model", "vec_normalize.pkl"
-        return "parking_ai_model", "vec_normalize.pkl"
 
     else:
         model_path = f"checkpoints/model_{arg}"
@@ -89,7 +80,7 @@ for epizod in range(N_EPISODES):
 
     done = [False]
     while not done[0]:
-        action, _states = model.predict(obs, deterministic=True)
+        action, _states = model.predict(obs, deterministic=False)
         obs, reward, done, info = env.step(action)
         suma_nagrod += reward[0]
         kroki += 1

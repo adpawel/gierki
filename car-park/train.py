@@ -70,31 +70,42 @@ eval_env = DummyVecEnv([make_env()])
 eval_env = VecNormalize(eval_env, norm_obs=True, norm_reward=False, clip_obs=10.0)
 
 
-model = PPO(
-    "MlpPolicy",
-    env,
-    verbose=0,
-    # Sieć: dwie warstwy po 256 neuronów - wystarczy do tego problemu
-    policy_kwargs=dict(net_arch=[256, 256]),
-    # Rozmiar próbki zbieranej przed aktualizacją sieci
-    n_steps=2048,
-    # Rozmiar mini-batcha do optymalizacji
-    batch_size=256,
-    # Liczba epok optymalizacji na zebranej próbce
-    n_epochs=10,
-    # Współczynnik uczenia
-    learning_rate=3e-4,
-    # Gamma - jak bardzo AI ceni przyszłe nagrody (wysoka = dalekowzroczna)
-    gamma=0.99,
-    # Clip epsilon - jak bardzo agresywnie zmieniamy politykę
-    clip_range=0.2,
-    # Entropia - zachęca do eksploracji (nie utknij w lokalnym optimum)
-    ent_coef=0.005,
-    # Normalizacja błędu przewidywania wartości
-    vf_coef=0.5,
-    # Gradient clipping - zapobiega eksplozji gradientów
-    max_grad_norm=0.5,
-)
+if os.path.exists("best_model/best_model.zip"):
+    print("Wczytywanie modelu do fine-tuningu...")
+    model = PPO.load("best_model/best_model", env=env)
+    # Synchronizujemy stare statystyki normalizacji jako punkt startowy
+    if os.path.exists("vec_normalize.pkl"):
+        old_stats = VecNormalize.load("vec_normalize.pkl", env)
+        env.obs_rms = old_stats.obs_rms  # przenosimy statystyki obserwacji
+        env.ret_rms = old_stats.ret_rms  # przenosimy statystyki nagród
+        print("Wczytano stare statystyki normalizacji.")
+else:
+    print("Brak modelu - trening od zera")
+    model = PPO(
+        "MlpPolicy",
+        env,
+        verbose=0,
+        # Sieć: dwie warstwy po 256 neuronów - wystarczy do tego problemu
+        policy_kwargs=dict(net_arch=[256, 256]),
+        # Rozmiar próbki zbieranej przed aktualizacją sieci
+        n_steps=2048,
+        # Rozmiar mini-batcha do optymalizacji
+        batch_size=256,
+        # Liczba epok optymalizacji na zebranej próbce
+        n_epochs=10,
+        # Współczynnik uczenia
+        learning_rate=3e-4,
+        # Gamma - jak bardzo AI ceni przyszłe nagrody (wysoka = dalekowzroczna)
+        gamma=0.99,
+        # Clip epsilon - jak bardzo agresywnie zmieniamy politykę
+        clip_range=0.2,
+        # Entropia - zachęca do eksploracji (nie utknij w lokalnym optimum)
+        ent_coef=0.005,
+        # Normalizacja błędu przewidywania wartości
+        vf_coef=0.5,
+        # Gradient clipping - zapobiega eksplozji gradientów
+        max_grad_norm=0.5,
+    )
 
 eval_callback = EvalCallback(
     eval_env,
@@ -109,6 +120,7 @@ eval_callback = EvalCallback(
 logger_callback = SimpleLoggerCallback(check_freq=5_000, checkpoint_freq=20_000)
 
 TOTAL_STEPS = 1_500_000
+# TOTAL_STEPS = 1_500_000
 
 print("=" * 60)
 print("  TRENING AUTONOMICZNEGO PARKOWANIA")

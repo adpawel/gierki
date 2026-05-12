@@ -1,76 +1,76 @@
 --- LOG TRENINGU AUTONOMICZNEGO PARKOWANIA ---
-Krok: 0020000 | Srednia nagroda: -120.28 | Skutecznosc: 0.0% *** NOWY REKORD ***
-Krok: 0040000 | Srednia nagroda: -90.30 | Skutecznosc: 0.0% *** NOWY REKORD ***
-Krok: 0060000 | Srednia nagroda: -50.46 | Skutecznosc: 0.0% *** NOWY REKORD ***
-Krok: 0080000 | Srednia nagroda: -51.67 | Skutecznosc: 0.0%
-Krok: 0100000 | Srednia nagroda: -48.16 | Skutecznosc: 0.0% *** NOWY REKORD ***
-Krok: 0120000 | Srednia nagroda: -37.54 | Skutecznosc: 0.0% *** NOWY REKORD ***
-Krok: 0140000 | Srednia nagroda: -12.16 | Skutecznosc: 0.0% *** NOWY REKORD ***
-Krok: 0160000 | Srednia nagroda: 2.67 | Skutecznosc: 1.0% *** NOWY REKORD ***
-Krok: 0180000 | Srednia nagroda: 4.97 | Skutecznosc: 1.0% *** NOWY REKORD ***
-Krok: 0200000 | Srednia nagroda: 7.67 | Skutecznosc: 1.0% *** NOWY REKORD ***
-Krok: 0220000 | Srednia nagroda: 13.84 | Skutecznosc: 2.0% *** NOWY REKORD ***
-Krok: 0240000 | Srednia nagroda: 34.10 | Skutecznosc: 8.0% *** NOWY REKORD ***
-Krok: 0260000 | Srednia nagroda: 65.59 | Skutecznosc: 21.0% *** NOWY REKORD ***
-Krok: 0280000 | Srednia nagroda: 119.63 | Skutecznosc: 40.0% *** NOWY REKORD ***
-Krok: 0300000 | Srednia nagroda: 175.93 | Skutecznosc: 62.0% *** NOWY REKORD ***
-Krok: 0320000 | Srednia nagroda: 138.57 | Skutecznosc: 51.0%
-Krok: 0340000 | Srednia nagroda: 150.83 | Skutecznosc: 57.0%
-Krok: 0360000 | Srednia nagroda: 198.68 | Skutecznosc: 73.0% *** NOWY REKORD ***
-Krok: 0380000 | Srednia nagroda: 233.70 | Skutecznosc: 83.0% *** NOWY REKORD ***
-Krok: 0400000 | Srednia nagroda: 200.45 | Skutecznosc: 72.0%
-Krok: 0420000 | Srednia nagroda: 234.69 | Skutecznosc: 79.0% *** NOWY REKORD ***
-Krok: 0440000 | Srednia nagroda: 275.69 | Skutecznosc: 95.0% *** NOWY REKORD ***
-Krok: 0460000 | Srednia nagroda: 284.74 | Skutecznosc: 96.0% *** NOWY REKORD ***
-Krok: 0480000 | Srednia nagroda: 280.93 | Skutecznosc: 94.0%
-Krok: 0500000 | Srednia nagroda: 291.77 | Skutecznosc: 98.0% *** NOWY REKORD ***
-Krok: 0520000 | Srednia nagroda: 290.29 | Skutecznosc: 98.0%
-Krok: 0540000 | Srednia nagroda: 296.80 | Skutecznosc: 100.0% *** NOWY REKORD ***
-Krok: 0560000 | Srednia nagroda: 297.31 | Skutecznosc: 100.0% *** NOWY REKORD ***
-Krok: 0580000 | Srednia nagroda: 297.70 | Skutecznosc: 100.0% *** NOWY REKORD ***
-Krok: 0600000 | Srednia nagroda: 290.54 | Skutecznosc: 97.0%
-Krok: 0620000 | Srednia nagroda: 297.97 | Skutecznosc: 100.0% *** NOWY REKORD ***
-Krok: 0640000 | Srednia nagroda: 298.37 | Skutecznosc: 100.0% *** NOWY REKORD ***
-Krok: 0660000 | Srednia nagroda: 298.04 | Skutecznosc: 100.0%
-Krok: 0680000 | Srednia nagroda: 298.91 | Skutecznosc: 100.0% *** NOWY REKORD ***
-Krok: 0700000 | Srednia nagroda: 295.52 | Skutecznosc: 99.0%
-Krok: 0720000 | Srednia nagroda: 295.80 | Skutecznosc: 99.0%
-Krok: 0740000 | Srednia nagroda: 296.33 | Skutecznosc: 100.0%
-Krok: 0760000 | Srednia nagroda: 298.50 | Skutecznosc: 100.0%
-Krok: 0780000 | Srednia nagroda: 290.53 | Skutecznosc: 98.0%
-Krok: 0800000 | Srednia nagroda: 298.01 | Skutecznosc: 100.0%
-Krok: 0820000 | Srednia nagroda: 293.66 | Skutecznosc: 99.0%
-Krok: 0840000 | Srednia nagroda: 297.31 | Skutecznosc: 100.0%
-Krok: 0860000 | Srednia nagroda: 287.86 | Skutecznosc: 97.0%
-Krok: 0880000 | Srednia nagroda: 287.06 | Skutecznosc: 97.0%
-Krok: 0900000 | Srednia nagroda: 298.39 | Skutecznosc: 100.0%
-Krok: 0920000 | Srednia nagroda: 295.81 | Skutecznosc: 99.0%
-Krok: 0940000 | Srednia nagroda: 269.74 | Skutecznosc: 91.0%
-Krok: 0960000 | Srednia nagroda: 299.25 | Skutecznosc: 100.0% *** NOWY REKORD ***
-Krok: 0980000 | Srednia nagroda: 296.83 | Skutecznosc: 99.0%
-Krok: 1000000 | Srednia nagroda: 298.95 | Skutecznosc: 100.0%
-Krok: 1020000 | Srednia nagroda: 297.24 | Skutecznosc: 99.0%
-Krok: 1040000 | Srednia nagroda: 296.50 | Skutecznosc: 99.0%
-Krok: 1060000 | Srednia nagroda: 282.22 | Skutecznosc: 96.0%
-Krok: 1080000 | Srednia nagroda: 295.63 | Skutecznosc: 99.0%
-Krok: 1100000 | Srednia nagroda: 299.02 | Skutecznosc: 100.0%
-Krok: 1120000 | Srednia nagroda: 297.61 | Skutecznosc: 100.0%
-Krok: 1140000 | Srednia nagroda: 298.37 | Skutecznosc: 100.0%
-Krok: 1160000 | Srednia nagroda: 298.01 | Skutecznosc: 100.0%
-Krok: 1180000 | Srednia nagroda: 299.41 | Skutecznosc: 100.0% *** NOWY REKORD ***
-Krok: 1200000 | Srednia nagroda: 299.68 | Skutecznosc: 100.0% *** NOWY REKORD ***
-Krok: 1220000 | Srednia nagroda: 295.97 | Skutecznosc: 99.0%
-Krok: 1240000 | Srednia nagroda: 297.78 | Skutecznosc: 100.0%
-Krok: 1260000 | Srednia nagroda: 294.13 | Skutecznosc: 99.0%
-Krok: 1280000 | Srednia nagroda: 293.97 | Skutecznosc: 99.0%
-Krok: 1300000 | Srednia nagroda: 298.31 | Skutecznosc: 100.0%
-Krok: 1320000 | Srednia nagroda: 289.20 | Skutecznosc: 97.0%
-Krok: 1340000 | Srednia nagroda: 297.46 | Skutecznosc: 100.0%
-Krok: 1360000 | Srednia nagroda: 296.91 | Skutecznosc: 100.0%
-Krok: 1380000 | Srednia nagroda: 298.14 | Skutecznosc: 100.0%
-Krok: 1400000 | Srednia nagroda: 298.84 | Skutecznosc: 100.0%
-Krok: 1420000 | Srednia nagroda: 293.93 | Skutecznosc: 99.0%
-Krok: 1440000 | Srednia nagroda: 299.02 | Skutecznosc: 100.0%
-Krok: 1460000 | Srednia nagroda: 298.04 | Skutecznosc: 100.0%
-Krok: 1480000 | Srednia nagroda: 297.92 | Skutecznosc: 100.0%
-Krok: 1500000 | Srednia nagroda: 297.26 | Skutecznosc: 100.0%
+Krok: 0020000 | Srednia nagroda: -25.00 | Skutecznosc: 5.7% *** NOWY REKORD ***
+Krok: 0040000 | Srednia nagroda: 62.52 | Skutecznosc: 24.4% *** NOWY REKORD ***
+Krok: 0060000 | Srednia nagroda: 143.15 | Skutecznosc: 42.0% *** NOWY REKORD ***
+Krok: 0080000 | Srednia nagroda: 165.59 | Skutecznosc: 47.0% *** NOWY REKORD ***
+Krok: 0100000 | Srednia nagroda: 233.41 | Skutecznosc: 75.0% *** NOWY REKORD ***
+Krok: 0120000 | Srednia nagroda: 215.18 | Skutecznosc: 68.0%
+Krok: 0140000 | Srednia nagroda: 200.21 | Skutecznosc: 61.0%
+Krok: 0160000 | Srednia nagroda: 230.80 | Skutecznosc: 72.0%
+Krok: 0180000 | Srednia nagroda: 206.40 | Skutecznosc: 61.0%
+Krok: 0200000 | Srednia nagroda: 237.02 | Skutecznosc: 75.0% *** NOWY REKORD ***
+Krok: 0220000 | Srednia nagroda: 231.30 | Skutecznosc: 72.0%
+Krok: 0240000 | Srednia nagroda: 236.38 | Skutecznosc: 74.0%
+Krok: 0260000 | Srednia nagroda: 226.54 | Skutecznosc: 70.0%
+Krok: 0280000 | Srednia nagroda: 232.57 | Skutecznosc: 72.0%
+Krok: 0300000 | Srednia nagroda: 246.26 | Skutecznosc: 78.0% *** NOWY REKORD ***
+Krok: 0320000 | Srednia nagroda: 252.89 | Skutecznosc: 81.0% *** NOWY REKORD ***
+Krok: 0340000 | Srednia nagroda: 244.87 | Skutecznosc: 77.0%
+Krok: 0360000 | Srednia nagroda: 265.42 | Skutecznosc: 86.0% *** NOWY REKORD ***
+Krok: 0380000 | Srednia nagroda: 240.32 | Skutecznosc: 75.0%
+Krok: 0400000 | Srednia nagroda: 244.33 | Skutecznosc: 77.0%
+Krok: 0420000 | Srednia nagroda: 250.04 | Skutecznosc: 79.0%
+Krok: 0440000 | Srednia nagroda: 275.49 | Skutecznosc: 90.0% *** NOWY REKORD ***
+Krok: 0460000 | Srednia nagroda: 283.72 | Skutecznosc: 94.0% *** NOWY REKORD ***
+Krok: 0480000 | Srednia nagroda: 266.44 | Skutecznosc: 86.0%
+Krok: 0500000 | Srednia nagroda: 263.73 | Skutecznosc: 85.0%
+Krok: 0520000 | Srednia nagroda: 274.96 | Skutecznosc: 90.0%
+Krok: 0540000 | Srednia nagroda: 284.69 | Skutecznosc: 94.0% *** NOWY REKORD ***
+Krok: 0560000 | Srednia nagroda: 273.24 | Skutecznosc: 89.0%
+Krok: 0580000 | Srednia nagroda: 265.85 | Skutecznosc: 86.0%
+Krok: 0600000 | Srednia nagroda: 276.20 | Skutecznosc: 90.0%
+Krok: 0620000 | Srednia nagroda: 279.92 | Skutecznosc: 92.0%
+Krok: 0640000 | Srednia nagroda: 282.40 | Skutecznosc: 93.0%
+Krok: 0660000 | Srednia nagroda: 273.02 | Skutecznosc: 89.0%
+Krok: 0680000 | Srednia nagroda: 256.31 | Skutecznosc: 83.0%
+Krok: 0700000 | Srednia nagroda: 278.28 | Skutecznosc: 91.0%
+Krok: 0720000 | Srednia nagroda: 294.31 | Skutecznosc: 98.0% *** NOWY REKORD ***
+Krok: 0740000 | Srednia nagroda: 277.13 | Skutecznosc: 91.0%
+Krok: 0760000 | Srednia nagroda: 283.40 | Skutecznosc: 94.0%
+Krok: 0780000 | Srednia nagroda: 280.09 | Skutecznosc: 92.0%
+Krok: 0800000 | Srednia nagroda: 289.36 | Skutecznosc: 96.0%
+Krok: 0820000 | Srednia nagroda: 281.66 | Skutecznosc: 93.0%
+Krok: 0840000 | Srednia nagroda: 286.17 | Skutecznosc: 95.0%
+Krok: 0860000 | Srednia nagroda: 284.50 | Skutecznosc: 94.0%
+Krok: 0880000 | Srednia nagroda: 283.68 | Skutecznosc: 94.0%
+Krok: 0900000 | Srednia nagroda: 286.76 | Skutecznosc: 95.0%
+Krok: 0920000 | Srednia nagroda: 284.44 | Skutecznosc: 94.0%
+Krok: 0940000 | Srednia nagroda: 279.66 | Skutecznosc: 92.0%
+Krok: 0960000 | Srednia nagroda: 278.14 | Skutecznosc: 91.0%
+Krok: 0980000 | Srednia nagroda: 282.04 | Skutecznosc: 93.0%
+Krok: 1000000 | Srednia nagroda: 296.22 | Skutecznosc: 99.0% *** NOWY REKORD ***
+Krok: 1020000 | Srednia nagroda: 293.65 | Skutecznosc: 98.0%
+Krok: 1040000 | Srednia nagroda: 294.26 | Skutecznosc: 98.0%
+Krok: 1060000 | Srednia nagroda: 298.29 | Skutecznosc: 100.0% *** NOWY REKORD ***
+Krok: 1080000 | Srednia nagroda: 280.38 | Skutecznosc: 92.0%
+Krok: 1100000 | Srednia nagroda: 293.64 | Skutecznosc: 98.0%
+Krok: 1120000 | Srednia nagroda: 291.37 | Skutecznosc: 97.0%
+Krok: 1140000 | Srednia nagroda: 289.46 | Skutecznosc: 96.0%
+Krok: 1160000 | Srednia nagroda: 291.44 | Skutecznosc: 97.0%
+Krok: 1180000 | Srednia nagroda: 273.01 | Skutecznosc: 90.0%
+Krok: 1200000 | Srednia nagroda: 290.05 | Skutecznosc: 97.0%
+Krok: 1220000 | Srednia nagroda: 290.99 | Skutecznosc: 98.0%
+Krok: 1240000 | Srednia nagroda: 282.13 | Skutecznosc: 93.0%
+Krok: 1260000 | Srednia nagroda: 293.45 | Skutecznosc: 98.0%
+Krok: 1280000 | Srednia nagroda: 290.81 | Skutecznosc: 97.0%
+Krok: 1300000 | Srednia nagroda: 294.03 | Skutecznosc: 98.0%
+Krok: 1320000 | Srednia nagroda: 295.92 | Skutecznosc: 99.0%
+Krok: 1340000 | Srednia nagroda: 297.75 | Skutecznosc: 100.0%
+Krok: 1360000 | Srednia nagroda: 293.43 | Skutecznosc: 98.0%
+Krok: 1380000 | Srednia nagroda: 298.38 | Skutecznosc: 100.0% *** NOWY REKORD ***
+Krok: 1400000 | Srednia nagroda: 274.68 | Skutecznosc: 90.0%
+Krok: 1420000 | Srednia nagroda: 288.81 | Skutecznosc: 96.0%
+Krok: 1440000 | Srednia nagroda: 294.90 | Skutecznosc: 99.0%
+Krok: 1460000 | Srednia nagroda: 295.73 | Skutecznosc: 99.0%
+Krok: 1480000 | Srednia nagroda: 281.90 | Skutecznosc: 93.0%
+Krok: 1500000 | Srednia nagroda: 291.66 | Skutecznosc: 97.0%
