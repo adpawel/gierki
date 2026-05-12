@@ -32,10 +32,11 @@ def select_model():
         step = os.path.basename(model_path).replace("model_", "")
         norm_path = f"checkpoints/vec_normalize_{step}.pkl"
         return model_path, norm_path
-
+    elif arg == "auto":
+        return "parking_ai_model", "vec_normalize.pkl"
     else:
         model_path = f"checkpoints/model_{arg}"
-        norm_path = f"checkpoints/vec_normalize_{arg}.pkl"
+        norm_path = f"checkpoints/vec_normalize.pkl"
         return model_path, norm_path
 
 
