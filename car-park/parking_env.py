@@ -3,6 +3,10 @@ from gymnasium import spaces
 import numpy as np
 import random
 import pygame
+import pygame
+import pygame.gfxdraw # Używane do gładszych kół (krzewów)
+import numpy as np
+
 
 class ParkingEnv(gym.Env):
     metadata = {"render_modes": ["human"], "render_fps": 30}
@@ -195,76 +199,104 @@ class ParkingEnv(gym.Env):
         if self.clock is None:
             self.clock = pygame.time.Clock()
 
-        # Tło - asfalt
-        self.window.fill((50, 50, 50))
+        def draw_detailed_car(surface, color, w, h, is_agent=False):
+            """Rysuje samochód z detalami (zawsze w poziomie na powierzchni)."""
+            # Korpus
+            pygame.draw.rect(surface, color, (0, 0, w, h), border_radius=7)
+            # Szyby
+            pygame.draw.rect(surface, (40, 45, 50), (w * 0.6, 5, w * 0.2, h - 10), border_radius=2)
+            pygame.draw.rect(surface, (40, 45, 50), (w * 0.2, 5, w * 0.1, h - 10), border_radius=1)
+            # Światła przednie
+            pygame.draw.rect(surface, (255, 255, 200), (w - 6, 2, 6, 10), border_radius=2)
+            pygame.draw.rect(surface, (255, 255, 200), (w - 6, h - 12, 6, 10), border_radius=2)
+            # Światła tylne
+            pygame.draw.rect(surface, (180, 0, 0), (0, 2, 4, 10), border_radius=1)
+            pygame.draw.rect(surface, (180, 0, 0), (0, h - 12, 4, 10), border_radius=1)
+            
+            if is_agent: # Oznaczenie dla agenta
+                pygame.draw.rect(surface, (255, 255, 255, 100), (w//2 - 5, 0, 10, h), 1)
 
-        # Rysuj linie parkingowe (biały wzór)
-        for i in range(0, 800, 40):
-            pygame.draw.line(self.window, (80, 80, 80), (i, 0), (i, 600), 1)
+        # --- 1. TŁO (Trawa i Asfalt) ---
+        self.window.fill((45, 90, 45))  # Trawa po bokach
+        
+        # Główny pas asfaltu (środek)
+        pygame.draw.rect(self.window, (35, 35, 35), (100, 0, 600, 600))
+        
+        # Subtelna siatka na asfalcie
+        for i in range(100, 700, 50):
+            pygame.draw.line(self.window, (45, 45, 45), (i, 0), (i, 600), 1)
 
-        # Miejsce parkingowe (META) - zielona ramka
+        # --- 2. PASY ZAPARKOWANYCH AUT (DEKORACJA TŁA) ---
+        side_colors = [(120, 120, 120), (50, 50, 50), (30, 60, 140), (160, 120, 30), (180, 180, 180)]
+        decor_w, decor_h = 85, 42
+        
+        for i in range(7):
+            y_pos = 25 + i * 85
+            # Auta po lewej stronie (przodem do drogi)
+            l_surf = pygame.Surface((decor_w, decor_h), pygame.SRCALPHA)
+            draw_detailed_car(l_surf, side_colors[i % len(side_colors)], decor_w, decor_h)
+            self.window.blit(l_surf, (10, y_pos))
+            
+            # Auta po prawej stronie (obrócone o 180 stopni)
+            r_surf = pygame.Surface((decor_w, decor_h), pygame.SRCALPHA)
+            draw_detailed_car(r_surf, side_colors[(i + 2) % len(side_colors)], decor_w, decor_h)
+            r_surf = pygame.transform.rotate(r_surf, 180)
+            self.window.blit(r_surf, (705, y_pos))
+
+        # --- 3. MIEJSCE PARKINGOWE (CEL) ---
         if self.target_angle == 0.0:
-            spot_width, spot_height = 120, 60
+            spot_w, spot_h = 130, 70
         else:
-            spot_width, spot_height = 60, 120
+            spot_w, spot_h = 70, 130
 
-        target_rect = pygame.Rect(
-            self.target_x - spot_width // 2,
-            self.target_y - spot_height // 2,
-            spot_width,
-            spot_height
-        )
-        pygame.draw.rect(self.window, (0, 200, 0), target_rect, 3)
+        target_rect = pygame.Rect(self.target_x - spot_w//2, self.target_y - spot_h//2, spot_w, spot_h)
+        pygame.draw.rect(self.window, (40, 65, 40), target_rect.inflate(-4, -4), border_radius=5)
+        pygame.draw.rect(self.window, (0, 255, 100), target_rect, 2, border_radius=5)
 
-        # Litera "P" w środku miejsca parkingowego
-        font = pygame.font.SysFont(None, 36)
-        p_text = font.render("P", True, (0, 200, 0))
-        self.window.blit(p_text, (self.target_x - 8, self.target_y - 12))
+        font_p = pygame.font.SysFont("Arial", 36, bold=True)
+        p_text = font_p.render("P", True, (0, 255, 100))
+        self.window.blit(p_text, (self.target_x - 12, self.target_y - 20))
 
-        # Przeszkody (czerwone samochody)
-        if self.target_angle == 0.0:
-            obs_w, obs_h = 100, 40
-        else:
-            obs_w, obs_h = 40, 100
+        # --- 4. PRZESZKODY (Czerwone auta obok celu) ---
+        obs_base_w, obs_base_h = 100, 45
+        for ox, oy in [(self.obs1_x, self.obs1_y), (self.obs2_x, self.obs2_y)]:
+            obs_surf = pygame.Surface((obs_base_w, obs_base_h), pygame.SRCALPHA)
+            draw_detailed_car(obs_surf, (180, 50, 50), obs_base_w, obs_base_h)
+            
+            # Obrót zgodnie z target_angle, żeby pasowały do miejsca
+            rotated_obs = pygame.transform.rotate(obs_surf, self.target_angle)
+            obs_rect = rotated_obs.get_rect(center=(ox, oy))
+            self.window.blit(rotated_obs, obs_rect.topleft)
 
-        obs1_rect = pygame.Rect(self.obs1_x - obs_w // 2, self.obs1_y - obs_h // 2, obs_w, obs_h)
-        obs2_rect = pygame.Rect(self.obs2_x - obs_w // 2, self.obs2_y - obs_h // 2, obs_w, obs_h)
-        pygame.draw.rect(self.window, (200, 50, 50), obs1_rect)
-        pygame.draw.rect(self.window, (200, 50, 50), obs2_rect)
+        # --- 5. SAMOCHÓD AGENTA (Niebieski) ---
+        car_base_w, car_base_h = 80, 40
+        car_surf = pygame.Surface((car_base_w, car_base_h), pygame.SRCALPHA)
+        draw_detailed_car(car_surf, (50, 130, 255), car_base_w, car_base_h, is_agent=True)
 
-        # Samochód agenta (niebieski, obracany)
-        car_width, car_height = 80, 40
-        car_surface = pygame.Surface((car_width, car_height), pygame.SRCALPHA)
-        car_surface.fill((50, 150, 255))
-        pygame.draw.rect(car_surface, (255, 0, 0), (car_width - 15, 0, 15, car_height))
-
-        rotated_car = pygame.transform.rotate(car_surface, self.car_angle)
+        rotated_car = pygame.transform.rotate(car_surf, self.car_angle)
         car_rect = rotated_car.get_rect(center=(self.car_x, self.car_y))
         self.window.blit(rotated_car, car_rect.topleft)
 
-        # HUD - informacje na ekranie
-        font_small = pygame.font.SysFont(None, 24)
+        # --- 6. HUD ---
+        hud_bg = pygame.Surface((230, 110), pygame.SRCALPHA)
+        hud_bg.fill((0, 0, 0, 170))
+        self.window.blit(hud_bg, (110, 10)) # Przesunięty na początek asfaltu
+
+        font_small = pygame.font.SysFont("Consolas", 18)
         dist = np.sqrt((self.car_x - self.target_x)**2 + (self.car_y - self.target_y)**2)
         angle_diff = abs((self.car_angle % 360) - self.target_angle)
-        if angle_diff > 180:
-            angle_diff = 360 - angle_diff
+        if angle_diff > 180: angle_diff = 360 - angle_diff
 
         hud_texts = [
-            f"Dystans do celu: {dist:.1f} px",
-            f"Roznica kata: {angle_diff:.1f} deg",
-            f"Predkosc: {self.car_speed:.2f}",
-            f"Krok: {self.step_count}",
+            f"Dystans: {dist:6.1f} px",
+            f"Kat:     {angle_diff:6.1f} deg",
+            f"Predkosc:{self.car_speed:6.2f}",
+            f"Krok:    {self.step_count:4d}",
         ]
         for i, text in enumerate(hud_texts):
-            surf = font_small.render(text, True, (255, 255, 255))
-            self.window.blit(surf, (10, 10 + i * 22))
+            surf = font_small.render(text, True, (220, 220, 220))
+            self.window.blit(surf, (120, 20 + i * 22))
 
         pygame.event.pump()
         pygame.display.flip()
         self.clock.tick(self.metadata["render_fps"])
-
-    def close(self):
-        if self.window is not None:
-            pygame.quit()
-            self.window = None
-            self.clock = None
