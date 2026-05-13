@@ -76,8 +76,8 @@ if os.path.exists("best_model/best_model.zip"):
     # Synchronizujemy stare statystyki normalizacji jako punkt startowy
     if os.path.exists("vec_normalize.pkl"):
         old_stats = VecNormalize.load("vec_normalize.pkl", env)
-        env.obs_rms = old_stats.obs_rms  # przenosimy statystyki obserwacji
-        env.ret_rms = old_stats.ret_rms  # przenosimy statystyki nagród
+        env.obs_rms = old_stats.obs_rms
+        env.ret_rms = old_stats.ret_rms
         print("Wczytano stare statystyki normalizacji.")
 else:
     print("Brak modelu - trening od zera")
@@ -120,7 +120,6 @@ eval_callback = EvalCallback(
 logger_callback = SimpleLoggerCallback(check_freq=5_000, checkpoint_freq=20_000)
 
 TOTAL_STEPS = 1_500_000
-# TOTAL_STEPS = 1_500_000
 
 print("=" * 60)
 print("  TRENING AUTONOMICZNEGO PARKOWANIA")
